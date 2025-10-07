@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WinBox Floating FAB Example</title>
+
+  <!-- WinBox CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/winbox/dist/css/winbox.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #f0f0f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    button {
+      padding: 10px 16px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+
+    /* ──────────────────────────────── */
+    /* FAB 스타일: 최소화된 윈도우용  */
+    /* ──────────────────────────────── */
+    .winbox.fab-window.min {
+      position: fixed !important;
+      right: 24px !important;
+      bottom: 24px !important;
+      width: 60px !important;
+      height: 60px !important;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    /* 헤더/제목 제거 */
+    .winbox.fab-window.min .wb-header {
+      display: none !important;
+    }
+
+    /* 내부 콘텐츠 중앙정렬 */
+    .winbox.fab-window.min .wb-body {
+      margin: 0 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: white;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    /* FAB hover 효과 */
+    .winbox.fab-window.min:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <button id="open">플로팅 윈도우 열기</button>
+
+  <!-- WinBox Script -->
+   <script src="
+https://cdn.jsdelivr.net/npm/winbox@0.2.82/dist/winbox.bundle.min.js
+"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/winbox@0.2.82/dist/css/winbox.min.css
+" rel="stylesheet">
+  <script>
+    const openBtn = document.getElementById('open');
+    let win;
+
+    openBtn.addEventListener('click', () => {
+      if (win) {
+        win.focus();
+        return;
+      }
+
+      // 플로팅 윈도우 생성
+      win = new WinBox({
+        title: "설정창",
+        class: "fab-window",     // 식별용 클래스
+        x: "center",
+        y: "center",
+        width: "400px",
+        height: "300px",
+        html: `
+          <div style="padding: 16px">
+            <h3>플로팅 윈도우 예시</h3>
+            <p>이 창은 드래그, 리사이즈 가능하며 최소화하면 플로팅 버튼처럼 보입니다.</p>
+            <button id="minimizeBtn">🔽 최소화</button>
+          </div>
+        `
+      });
+
+      // 내부 최소화 버튼 동작
+      win.body.querySelector('#minimizeBtn').addEventListener('click', () => {
+        win.minimize(true);
+      });
+
+      // 최소화 상태에서 클릭하면 복원
+      const root = win.body.parentNode;
+      root.addEventListener('click', (e) => {
+        if (root.classList.contains('min')) {
+          win.minimize(false);
+          win.focus();
+          e.stopPropagation();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
