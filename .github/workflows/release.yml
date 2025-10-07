@@ -105,7 +105,7 @@ jobs:
           ## 📦 ${{ steps.detect.outputs.plugin }} v${{ steps.detect.outputs.version }}
 
           ### 📥 설치 방법
-          1. `${{ steps.detect.outputs.plugin }}-${{ steps.detect.outputs.version }}.js` 다운로드
+          1. `${{ steps.detect.outputs.plugin }}-v${{ steps.detect.outputs.version }}.js` 다운로드
           2. RISU AI 플러그인 관리자에서 업로드
           3. 플러그인 활성화
           
