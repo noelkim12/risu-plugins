@@ -9,6 +9,7 @@ on:
       - 'hddm-edit-*'
       - 'cbs-intellisense-*'
       - 'lightboard-*'
+      - 'plugin-dnd-*'
 
 jobs:
   release:
