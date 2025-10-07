@@ -77,7 +77,6 @@ let accepted = false;
                 e.stopPropagation();
                 
                 const toggleState = _pluginTitleDiv.getAttribute("data-toggle-state");
-                _pluginDndToggle.click();
                 
                 if (toggleState === "closed") {
                     _pluginNextEl.style.display = "";
@@ -121,6 +120,7 @@ let accepted = false;
             // DROP 이벤트 처리
             dropZone.addEventListener("drop", async (event) => {
                 event.preventDefault();
+                event.stopPropagation();
                 dropZone.classList.remove("dragover");
 
                 // 드롭된 파일 정보 - event.dataTransfer.files
@@ -249,6 +249,11 @@ let accepted = false;
                         customLink: customLink,
                     };
 
+                    let oldPlugin = getDatabase().plugins.filter(_plugin => _plugin.name == name);
+                    console.log(oldPlugin,oldPlugin.length, oldPlugin.length > 0, name);
+                    if (oldPlugin?.length > 0) {
+                        await alertMd(`${name} 플러그인이 이미 설치되어 있습니다. 기존 플러그인을 덮어씁니다.`);
+                    }
                     // 이름겹치는 플러그인 제거
                     getDatabase().plugins = getDatabase().plugins.filter(_plugin => _plugin.name !== name);
                     // 제거 후 새로운 플러그인 추가
@@ -258,6 +263,7 @@ let accepted = false;
 
                     // 플러그인 로드
                     setTimeout(() => {
+                        alertMd(`${name} 플러그인이 설치되었습니다.`);
                         loadPlugins();
                     }, 1000);
                 }
@@ -328,7 +334,6 @@ let accepted = false;
         constructor() {
             super(); // 항상 맨 처음에 호출해야 함
     
-            // SVG 문자열은 여기서 정의해도 OK
             this.TOGGLE_ON_SVG = `
             <svg style="display:inline;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="5,7 10,12 15,7"></polyline>
