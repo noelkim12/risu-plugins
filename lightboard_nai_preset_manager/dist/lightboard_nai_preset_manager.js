@@ -1,4 +1,4 @@
-//@name Lightboard NAI Preset Manager_v0.1
+//@name Lightboard NAI Preset Manager
 //@display-name Lightboard NAI Preset Manager_v0.1
 //@version 0.1
 //@description Lightboard NAI Preset Manager for RISU AI
@@ -112,6 +112,11 @@ let accepted = false;
       onNavigate: (id) => navigate(`/edit/${id}`),
     };
     LB_NAI_MODULE_BOX_ROOT.appendChild(LIST_ELEMENT);
+  }
+
+  function navigate(to) {
+    if (location.hash !== `#${to}`) location.hash = to;
+    else render();
   }
 
   function startObserver() {

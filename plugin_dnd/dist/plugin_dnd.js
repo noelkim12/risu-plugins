@@ -1,7 +1,8 @@
-//@name PLUGIN DRAG N DROP_v0.1
-//@display-name PLUGIN DRAG N DROP_v0.1
-//@version 0.1
+//@name PLUGIN DRAG N DROP
+//@display-name PLUGIN DRAG N DROP_v0.2
+//@version 0.2
 //@description Plugin Drag N Drop for RISU AI
+//@args devMode int
 const PLUGIN_NAME = "PLUGIN DRAG N DROP";
 const PLUGIN_VERSION = "v0.1";
 const pluginApis = globalThis.__pluginApis__;
@@ -57,6 +58,8 @@ let accepted = false;
     let setDatabaseLite = risuAPI.setDatabaseLite;
     let loadPlugins = risuAPI.loadPlugins;
 
+    const IS_DEV_MODE = risuAPI.getArg("PLUGIN DRAG N DROP::devMode") == 1;
+
     function attachToggleOnPlugins(dropZone) {
         [...dropZone.querySelectorAll("span.font-bold.flex-grow")].forEach(_pluginTitleEl => {
             let _pluginTitleDiv = _pluginTitleEl.parentElement;
@@ -66,24 +69,24 @@ let accepted = false;
 
             let _pluginDndToggle = document.createElement("plugin-dnd-toggle");
             _pluginTitleEl.innerHTML = `${_pluginDndToggle.outerHTML} ${_pluginTitleEl.innerHTML}`;
-            _pluginTitleDiv.style.cursor = "pointer";
+            _pluginTitleEl.style.cursor = "pointer";
             _pluginNextEl.style.display = "none";
             
             // 토글 상태 추적을 위한 속성 추가
-            _pluginTitleDiv.setAttribute("data-toggle-state", "closed");
+            _pluginTitleEl.setAttribute("data-toggle-state", "closed");
             
-            _pluginTitleDiv.addEventListener("click", (e) => {
+            _pluginTitleEl.addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const toggleState = _pluginTitleDiv.getAttribute("data-toggle-state");
+                const toggleState = _pluginTitleEl.getAttribute("data-toggle-state");
                 
                 if (toggleState === "closed") {
                     _pluginNextEl.style.display = "";
-                    _pluginTitleDiv.setAttribute("data-toggle-state", "open");
+                    _pluginTitleEl.setAttribute("data-toggle-state", "open");
                 } else {
                     _pluginNextEl.style.display = "none";
-                    _pluginTitleDiv.setAttribute("data-toggle-state", "closed");
+                    _pluginTitleEl.setAttribute("data-toggle-state", "closed");
                 }
             });
         })
@@ -108,167 +111,185 @@ let accepted = false;
 
             attachToggleOnPlugins(dropZone);
 
-            dropZone.addEventListener("dragover", (event) => {
-                event.preventDefault();
-                dropZone.classList.add("dragover");
-            });
+            attachEventOnElement(dropZone);
+        }
+    }
 
-            dropZone.addEventListener("dragleave", (event) => {
-                dropZone.classList.remove("dragover");
-            });
+    async function attachEventOnElement(dropZone) {
+        // 이벤트 중복 처리 방지
+        dropZone.removeEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropZone.classList.add("dragover");
+        });
+        dropZone.removeEventListener("dragleave", (event) => {
+            dropZone.classList.remove("dragover");
+        });
+        dropZone.removeEventListener("drop", async (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            dropZone.classList.remove("dragover");
+        });
 
-            // DROP 이벤트 처리
-            dropZone.addEventListener("drop", async (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                dropZone.classList.remove("dragover");
+        dropZone.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropZone.classList.add("dragover");
+        });
 
-                // 드롭된 파일 정보 - event.dataTransfer.files
-                const files = event.dataTransfer.files;
+        dropZone.addEventListener("dragleave", (event) => {
+            dropZone.classList.remove("dragover");
+        });
 
-                if (files.length === 1) {
-                    const file = files[0];
-                    console.log("드롭된 파일:", file);
-                    console.log("이름:", file.name);
-                    console.log("크기:", file.size, "bytes");
-                    console.log("타입:", file.type);
+        // DROP 이벤트 처리
+        dropZone.addEventListener("drop", async (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            dropZone.classList.remove("dragover");
 
-                    const f = {
-                        name: file.name,
-                        data: await readFileAsUint8Array(file)
-                    };
+            // 드롭된 파일 정보 - event.dataTransfer.files
+            const files = event.dataTransfer.files;
 
-                    const jsFile = Buffer.from(f.data)
-                        .toString("utf-8")
-                        .replace(/^\uFEFF/gm, "");
-                    const splitedJs = jsFile.split("\n");
+            if (files.length === 1) {
+                const file = files[0];
+                console.log("드롭된 파일:", file);
+                console.log("이름:", file.name);
+                console.log("크기:", file.size, "bytes");
+                console.log("타입:", file.type);
 
-                    let name = "";
-                    let displayName = undefined;
-                    let arg = {};
-                    let realArg = {};
-                    let customLink = [];
+                const f = {
+                    name: file.name,
+                    data: await readFileAsUint8Array(file)
+                };
 
-                    for (const line of splitedJs) {
-                        if (line.startsWith("//@risu-name")) {
-                            alertMd(
-                                "V1 plugin is not supported anymore, please use V2 plugin instead. for more information, please check the documentation. `https://github.com/kwaroran/RisuAI/blob/main/plugins.md`"
-                            );
-                            return;
-                        }
-                        if (line.startsWith("//@risu-display-name")) {
-                            alertMd(
-                                "V1 plugin is not supported anymore, please use V2 plugin instead. for more information, please check the documentation. `https://github.com/kwaroran/RisuAI/blob/main/plugins.md`"
-                            );
-                            return;
-                        }
-                        if (line.startsWith("//@name")) {
-                            const provied = line.slice(7);
-                            if (provied === "") {
-                                alertError(
-                                    "plugin name must be longer than 0, did you put it correctly?"
-                                );
-                                return;
-                            }
-                            name = provied.trim();
-                        }
-                        if (line.startsWith("//@display-name")) {
-                            const provied = line.slice("//@display-name".length + 1);
-                            if (provied === "") {
-                                alertError(
-                                    "plugin display name must be longer than 0, did you put it correctly?"
-                                );
-                                return;
-                            }
-                            displayName = provied.trim();
-                        }
+                const jsFile = Buffer.from(f.data)
+                    .toString("utf-8")
+                    .replace(/^\uFEFF/gm, "");
+                const splitedJs = jsFile.split("\n");
 
-                        if (line.startsWith("//@link")) {
-                            const link = line.split(" ")[1];
-                            if (!link || link === "") {
-                                alertError("plugin link is empty, did you put it correctly?");
-                                return;
-                            }
-                            if (!link.startsWith("https")) {
-                                alertError(
-                                    "plugin link must start with https, did you check it?"
-                                );
-                                return;
-                            }
-                            const hoverText = line.split(" ").slice(2).join(" ").trim();
-                            if (hoverText === "") {
-                                // OK, no hover text. It's fine.
-                                customLink.push({
-                                    link: link,
-                                    hoverText: undefined,
-                                });
-                            } else
-                                customLink.push({
-                                    link: link,
-                                    hoverText: hoverText || undefined,
-                                });
-                        }
-                        if (line.startsWith("//@risu-arg") || line.startsWith("//@arg")) {
-                            const provied = line.trim().split(" ");
-                            if (provied.length < 3) {
-                                alertError(
-                                    "plugin argument is incorrect, did you put space in argument name?"
-                                );
-                                return;
-                            }
-                            const provKey = provied[1];
+                let name = "";
+                let displayName = undefined;
+                let arg = {};
+                let realArg = {};
+                let customLink = [];
 
-                            if (provied[2] !== "int" && provied[2] !== "string") {
-                                alertError(
-                                    `plugin argument type is "${provied[2]}", which is an unknown type.`
-                                );
-                                return;
-                            }
-                            if (provied[2] === "int") {
-                                arg[provKey] = "int";
-                                realArg[provKey] = 0;
-                            } else if (provied[2] === "string") {
-                                arg[provKey] = "string";
-                                realArg[provKey] = "";
-                            }
-                        }
-                    }
-
-                    if (name.length === 0) {
-                        alertError("plugin name not found, did you put it correctly?");
+                for (const line of splitedJs) {
+                    if (line.startsWith("//@risu-name")) {
+                        alertMd(
+                            "V1 plugin is not supported anymore, please use V2 plugin instead. for more information, please check the documentation. `https://github.com/kwaroran/RisuAI/blob/main/plugins.md`"
+                        );
                         return;
                     }
-
-                    let pluginData = {
-                        name: name,
-                        script: jsFile,
-                        realArg: realArg,
-                        arguments: arg,
-                        displayName: displayName,
-                        version: 2,
-                        customLink: customLink,
-                    };
-
-                    let oldPlugin = getDatabase().plugins.filter(_plugin => _plugin.name == name);
-                    console.log(oldPlugin,oldPlugin.length, oldPlugin.length > 0, name);
-                    if (oldPlugin?.length > 0) {
-                        await alertMd(`${name} 플러그인이 이미 설치되어 있습니다. 기존 플러그인을 덮어씁니다.`);
+                    if (line.startsWith("//@risu-display-name")) {
+                        alertMd(
+                            "V1 plugin is not supported anymore, please use V2 plugin instead. for more information, please check the documentation. `https://github.com/kwaroran/RisuAI/blob/main/plugins.md`"
+                        );
+                        return;
                     }
-                    // 이름겹치는 플러그인 제거
-                    getDatabase().plugins = getDatabase().plugins.filter(_plugin => _plugin.name !== name);
-                    // 제거 후 새로운 플러그인 추가
-                    getDatabase().plugins.push(pluginData);
-                    // DB 저장
-                    setDatabaseLite(getDatabase());
+                    if (line.startsWith("//@name")) {
+                        const provied = line.slice(7);
+                        if (provied === "") {
+                            alertError(
+                                "plugin name must be longer than 0, did you put it correctly?"
+                            );
+                            return;
+                        }
+                        name = provied.trim();
+                    }
+                    if (line.startsWith("//@display-name")) {
+                        const provied = line.slice("//@display-name".length + 1);
+                        if (provied === "") {
+                            alertError(
+                                "plugin display name must be longer than 0, did you put it correctly?"
+                            );
+                            return;
+                        }
+                        displayName = provied.trim();
+                    }
 
-                    // 플러그인 로드
-                    setTimeout(() => {
-                        alertMd(`${name} 플러그인이 설치되었습니다.`);
-                        loadPlugins();
-                    }, 1000);
+                    if (line.startsWith("//@link")) {
+                        const link = line.split(" ")[1];
+                        if (!link || link === "") {
+                            alertError("plugin link is empty, did you put it correctly?");
+                            return;
+                        }
+                        if (!link.startsWith("https")) {
+                            alertError(
+                                "plugin link must start with https, did you check it?"
+                            );
+                            return;
+                        }
+                        const hoverText = line.split(" ").slice(2).join(" ").trim();
+                        if (hoverText === "") {
+                            // OK, no hover text. It's fine.
+                            customLink.push({
+                                link: link,
+                                hoverText: undefined,
+                            });
+                        } else
+                            customLink.push({
+                                link: link,
+                                hoverText: hoverText || undefined,
+                            });
+                    }
+                    if (line.startsWith("//@risu-arg") || line.startsWith("//@arg")) {
+                        const provied = line.trim().split(" ");
+                        if (provied.length < 3) {
+                            alertError(
+                                "plugin argument is incorrect, did you put space in argument name?"
+                            );
+                            return;
+                        }
+                        const provKey = provied[1];
+
+                        if (provied[2] !== "int" && provied[2] !== "string") {
+                            alertError(
+                                `plugin argument type is "${provied[2]}", which is an unknown type.`
+                            );
+                            return;
+                        }
+                        if (provied[2] === "int") {
+                            arg[provKey] = "int";
+                            realArg[provKey] = 0;
+                        } else if (provied[2] === "string") {
+                            arg[provKey] = "string";
+                            realArg[provKey] = "";
+                        }
+                    }
                 }
-            });
-        }
+
+                if (name.length === 0) {
+                    alertError("plugin name not found, did you put it correctly?");
+                    return;
+                }
+
+                let pluginData = {
+                    name: name,
+                    script: jsFile,
+                    realArg: realArg,
+                    arguments: arg,
+                    displayName: displayName,
+                    version: 2,
+                    customLink: customLink,
+                };
+
+                let oldPlugin = getDatabase().plugins.filter(_plugin => _plugin.name == name);
+                console.log(oldPlugin,oldPlugin.length, oldPlugin.length > 0, name);
+                if (oldPlugin?.length > 0) {
+                    await alertMd(`${name} 플러그인이 이미 설치되어 있습니다. 기존 플러그인을 덮어씁니다.`);
+                }
+                // 이름겹치는 플러그인 제거
+                getDatabase().plugins = getDatabase().plugins.filter(_plugin => _plugin.name !== name);
+                // 제거 후 새로운 플러그인 추가
+                getDatabase().plugins.push(pluginData);
+                // DB 저장
+                setDatabaseLite(getDatabase());
+
+                // 플러그인 로드
+                setTimeout(() => {
+                    alertMd(`${name} 플러그인이 설치되었습니다.`);
+                    loadPlugins();
+                }, 1000);
+            }
+        });
     }
 
     async function readFileAsUint8Array(file) {
@@ -300,6 +321,10 @@ let accepted = false;
             subtree: true,
         });
         setTimeout(appendPluginDND, 500);
+        
+        if (IS_DEV_MODE) {
+            attachEventOnElement(document.querySelector("main div"));
+        }
     }
 
     risuAPI.onUnload(() => {

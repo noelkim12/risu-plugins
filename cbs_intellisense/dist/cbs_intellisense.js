@@ -1,4 +1,4 @@
-//@name CBS IntelliSense_v0.1
+//@name CBS IntelliSense
 //@display-name CBS IntelliSense_v0.1
 //@version 0.1
 //@description CBS IntelliSense for RISU AI
