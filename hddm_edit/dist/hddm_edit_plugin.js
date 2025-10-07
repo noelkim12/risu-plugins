@@ -1,6 +1,6 @@
 //@name Handdam Edit Plugin
-//@display-name Handdam Edit Plugin_v0.5
-//@version 0.5
+//@display-name Handdam Edit Plugin_v0.6
+//@version 0.6
 //@description Handdam Edit Plugin for RISU AI
 
 // ----------------------------------------------------------------

@@ -1,14 +1,14 @@
 {
   "hddm_edit": {
     "name": "Handdam Edit Plugin",
-    "version": "0.5",
+    "version": "0.6",
     "files": [
       "dist/hddm_edit_plugin.js"
     ]
   },
   "cbs_intellisense": {
     "name": "CBS IntelliSense",
-    "version": "0.1",
+    "version": "0.2",
     "files": [
       "dist/cbs_intellisense.js"
     ]
@@ -22,7 +22,7 @@
   },
   "plugin_dnd": {
     "name": "Plugin DND",
-    "version": "0.1",
+    "version": "0.2",
     "files": [
       "dist/plugin_dnd.js"
     ]
