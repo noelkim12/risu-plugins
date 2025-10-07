@@ -1,7 +1,7 @@
 {
   "hddm_edit": {
     "name": "Handdam Edit Plugin",
-    "version": "0.4",
+    "version": "0.5",
     "files": [
       "dist/hddm_edit_plugin.js"
     ]
@@ -17,7 +17,14 @@
     "name": "Lightboard NAI Preset Manager",
     "version": "0.1",
     "files": [
-      "lightboard_nai_preset_manager.js"
+      "dist/lightboard_nai_preset_manager.js"
+    ]
+  },
+  "plugin_dnd": {
+    "name": "Plugin DND",
+    "version": "0.1",
+    "files": [
+      "dist/plugin_dnd.js"
     ]
   }
 }

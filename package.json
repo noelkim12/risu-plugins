@@ -6,16 +6,20 @@
     "release:hddm": "node scripts/release.js hddm_edit",
     "release:cbs": "node scripts/release.js cbs_intellisense", 
     "release:lb-nai-preset": "node scripts/release.js lightboard_nai_preset_manager",
-    "release:all": "npm run release:hddm && npm run release:cbs && npm run release:lightboard",
+    "release:plugin-dnd": "node scripts/release.js plugin_dnd",
+    "release:all": "npm run release:hddm && npm run release:cbs && npm run release:lb-nai-preset && npm run release:plugin-dnd",
     "tag:hddm": "node scripts/create-tag.js hddm_edit",
     "tag:cbs": "node scripts/create-tag.js cbs_intellisense",
     "tag:lb-nai-preset": "node scripts/create-tag.js lightboard_nai_preset_manager",
+    "tag:plugin-dnd": "node scripts/create-tag.js plugin_dnd",
     "delete-tag:hddm": "node scripts/delete-tag.js hddm_edit",
     "delete-tag:cbs": "node scripts/delete-tag.js cbs_intellisense",
     "delete-tag:lb-nai-preset": "node scripts/delete-tag.js lightboard_nai_preset_manager",
+    "delete-tag:plugin-dnd": "node scripts/delete-tag.js plugin_dnd",
     "version:hddm": "node scripts/update-version.js hddm_edit",
     "version:cbs": "node scripts/update-version.js cbs_intellisense",
-    "version:lb-nai-preset": "node scripts/update-version.js lightboard_nai_preset_manager"
+    "version:lb-nai-preset": "node scripts/update-version.js lightboard_nai_preset_manager",
+    "version:plugin-dnd": "node scripts/update-version.js plugin_dnd"
   },
   "keywords": [
     "risu",
