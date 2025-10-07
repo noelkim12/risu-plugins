@@ -36,18 +36,11 @@ let accepted = false;
         risuAPI.language = eval("language");
         risuAPI.alertError = eval("alertError");
         risuAPI.alertMd = eval("alertMd");
-        globalThis.__pluginApis__.getDatabase = risuAPI.getDatabase;
-        globalThis.__pluginApis__.setDatabaseLite = risuAPI.setDatabaseLite;
-        globalThis.__pluginApis__.loadPlugins = risuAPI.loadPlugins;
-        globalThis.__pluginApis__.language = risuAPI.language;
-        globalThis.__pluginApis__.alertError = risuAPI.alertError;
-        globalThis.__pluginApis__.alertMd = risuAPI.alertMd;
         accepted = true;
     } catch (error) {
         console.log("[RisuAPI] Failed to add getDatabase:", error);
     }
 }
-
 (async () => {
     if (!accepted) {
         console.log("[PLUGIN DRAG N DROP] plugin not loaded..");
@@ -57,12 +50,45 @@ let accepted = false;
 
     console.log("[PLUGIN DRAG N DROP] plugin loaded");
 
-    language = risuAPI.language;
-    alertError = risuAPI.alertError;
-    alertMd = risuAPI.alertMd;
-    getDatabase = risuAPI.getDatabase;
-    setDatabaseLite = risuAPI.setDatabaseLite;
-    loadPlugins = risuAPI.loadPlugins;
+    let language = risuAPI.language;
+    let alertError = risuAPI.alertError;
+    let alertMd = risuAPI.alertMd;
+    let getDatabase = risuAPI.getDatabase;
+    let setDatabaseLite = risuAPI.setDatabaseLite;
+    let loadPlugins = risuAPI.loadPlugins;
+
+    function attachToggleOnPlugins(dropZone) {
+        [...dropZone.querySelectorAll("span.font-bold.flex-grow")].forEach(_pluginTitleEl => {
+            let _pluginTitleDiv = _pluginTitleEl.parentElement;
+            let _pluginNextEl = _pluginTitleDiv.nextElementSibling;
+            
+            if ( !_pluginNextEl || _pluginNextEl?.classList?.contains("seperator") ) return;
+
+            let _pluginDndToggle = document.createElement("plugin-dnd-toggle");
+            _pluginTitleEl.innerHTML = `${_pluginDndToggle.outerHTML} ${_pluginTitleEl.innerHTML}`;
+            _pluginTitleDiv.style.cursor = "pointer";
+            _pluginNextEl.style.display = "none";
+            
+            // 토글 상태 추적을 위한 속성 추가
+            _pluginTitleDiv.setAttribute("data-toggle-state", "closed");
+            
+            _pluginTitleDiv.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const toggleState = _pluginTitleDiv.getAttribute("data-toggle-state");
+                _pluginDndToggle.click();
+                
+                if (toggleState === "closed") {
+                    _pluginNextEl.style.display = "";
+                    _pluginTitleDiv.setAttribute("data-toggle-state", "open");
+                } else {
+                    _pluginNextEl.style.display = "none";
+                    _pluginTitleDiv.setAttribute("data-toggle-state", "closed");
+                }
+            });
+        })
+    }
 
     async function appendPluginDND() {
         const xpath = '//h2[text()="플러그인"]';
@@ -80,6 +106,8 @@ let accepted = false;
                 return;
 
             dropZone.classList.add("plugin-dnd-drop-zone");
+
+            attachToggleOnPlugins(dropZone);
 
             dropZone.addEventListener("dragover", (event) => {
                 event.preventDefault();
@@ -221,9 +249,15 @@ let accepted = false;
                         customLink: customLink,
                     };
 
+                    // 이름겹치는 플러그인 제거
+                    getDatabase().plugins = getDatabase().plugins.filter(_plugin => _plugin.name !== name);
+                    // 제거 후 새로운 플러그인 추가
+                    getDatabase().plugins.push(pluginData);
+                    // DB 저장
+                    setDatabaseLite(getDatabase());
+
+                    // 플러그인 로드
                     setTimeout(() => {
-                        getDatabase()?.plugins?.push(pluginData);
-                        setDatabaseLite(getDatabase());
                         loadPlugins();
                     }, 1000);
                 }
@@ -270,22 +304,56 @@ let accepted = false;
 })();
 
 (() => {
+    let CE = globalThis.customElements || customElements;
     const style = document.createElement("style");
     style.textContent = `
         .plugin-dnd-drop-zone {
-          border: 2px dashed #ccc;
-          border-radius: 8px;
-          padding: 40px;
-          color: #ccc;
-          font-family: sans-serif;
-          transition: all 0.2s ease;
-          pointer-events: auto !important;
-          position: relative;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            color: #ccc;
+            font-family: sans-serif;
+            transition: all 0.2s ease;
+            pointer-events: auto !important;
+            position: relative;
         }
         .plugin-dnd-drop-zone.dragover {
-          border-color: #3399ff;
-          background-color: #2a2a2a;
+            border-color: #3399ff;
+            background-color: #2a2a2a;
         }
     `;
     document.head.appendChild(style);
+
+    class PluginDNDToggle extends HTMLElement {
+        constructor() {
+            super(); // 항상 맨 처음에 호출해야 함
+    
+            // SVG 문자열은 여기서 정의해도 OK
+            this.TOGGLE_ON_SVG = `
+            <svg style="display:inline;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="5,7 10,12 15,7"></polyline>
+            </svg>`;
+            
+            this.TOGGLE_OFF_SVG = `
+            <svg style="display:inline;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="5,13 10,8 15,13"></polyline>
+            </svg>`;
+    
+            this.addEventListener("click", () => {
+                if (this.isToggledOn) {
+                    this.innerHTML = this.TOGGLE_OFF_SVG;
+                } else {
+                    this.innerHTML = this.TOGGLE_ON_SVG;
+                }
+                this.isToggledOn = !this.isToggledOn;
+            });
+        }
+    
+        connectedCallback() {
+            this.isToggledOn = true;
+            this.innerHTML = this.TOGGLE_ON_SVG;
+        }
+    }
+
+    CE.get("plugin-dnd-toggle") || CE.define("plugin-dnd-toggle", PluginDNDToggle);
 })();

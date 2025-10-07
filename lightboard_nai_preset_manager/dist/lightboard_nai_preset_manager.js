@@ -44,6 +44,8 @@ let accepted = false;
   let LB_NAI_MODULE = null;
   let LB_WAN_MODULE_IDX = -1;
   let LB_WAN_MODULE = null;
+  let LB_NAI_LOREBOOK = null;
+  let LB_NAI_PRESETS = [];
 
   let LB_NAI_MODULE_BOX;
   let LB_WAN_MODULE_BOX;
@@ -69,6 +71,12 @@ let accepted = false;
     console.log("[Lightboard NAI Preset Manager] module not found");
     return;
   }
+
+  LB_NAI_LOREBOOK = LB_NAI_MODULE.lorebook;
+  LB_NAI_PRESETS = LB_NAI_LOREBOOK.map((_l, _idx) => {
+    _l.id = _idx;
+    return _l;
+  }).filter(_l => _l.comment.includes("프리셋"));
 
   function openModuleBox() {
     if (LB_NAI_MODULE_BOX) return;
@@ -100,9 +108,8 @@ let accepted = false;
 
     const LIST_ELEMENT = document.createElement("lnpm-list");
     LIST_ELEMENT.data = {
-      presets,
+      presets : LB_NAI_PRESETS,
       onNavigate: (id) => navigate(`/edit/${id}`),
-      filledFlags,
     };
     LB_NAI_MODULE_BOX_ROOT.appendChild(LIST_ELEMENT);
   }
@@ -121,7 +128,7 @@ let accepted = false;
     setTimeout(attachButton, 500);
   }
 
-  startObserver(); // 이 줄 추가!
+  startObserver();
 
   function attachButton() {
     let burgerEl = document.querySelector(
@@ -331,7 +338,7 @@ let accepted = false;
         .map(
           (p) => `
             <div class="lnpm-item" data-id="${p.id}">
-              <div>${p.name}</div>
+              <div>${p.comment}</div>
             </div>
           `
         )
