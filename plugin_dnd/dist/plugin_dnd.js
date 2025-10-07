@@ -113,22 +113,18 @@ let accepted = false;
 
             attachEventOnElement(dropZone);
         }
+        if (IS_DEV_MODE) {
+            attachEventOnElement(document.querySelector("main div"));
+        }
     }
 
     async function attachEventOnElement(dropZone) {
-        // 이벤트 중복 처리 방지
-        dropZone.removeEventListener("dragover", (event) => {
-            event.preventDefault();
-            dropZone.classList.add("dragover");
-        });
-        dropZone.removeEventListener("dragleave", (event) => {
-            dropZone.classList.remove("dragover");
-        });
-        dropZone.removeEventListener("drop", async (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            dropZone.classList.remove("dragover");
-        });
+
+        const DROP_ZONE_CLASS = "plugin-dnd-drop-zone-appended";
+
+        if ( dropZone.classList.contains(DROP_ZONE_CLASS) ) return;
+
+        dropZone.classList.add(DROP_ZONE_CLASS);
 
         dropZone.addEventListener("dragover", (event) => {
             event.preventDefault();
@@ -321,10 +317,6 @@ let accepted = false;
             subtree: true,
         });
         setTimeout(appendPluginDND, 500);
-        
-        if (IS_DEV_MODE) {
-            attachEventOnElement(document.querySelector("main div"));
-        }
     }
 
     risuAPI.onUnload(() => {
