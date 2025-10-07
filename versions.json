@@ -1,0 +1,23 @@
+{
+  "hddm_edit": {
+    "name": "Handdam Edit Plugin",
+    "version": "0.4",
+    "files": [
+      "dist/hddm_edit_plugin.js"
+    ]
+  },
+  "cbs_intellisense": {
+    "name": "CBS IntelliSense",
+    "version": "0.1",
+    "files": [
+      "dist/cbs_intellisense.js"
+    ]
+  },
+  "lightboard_nai_preset_manager": {
+    "name": "Lightboard NAI Preset Manager",
+    "version": "0.1",
+    "files": [
+      "lightboard_nai_preset_manager.js"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "risu-plugins",
+  "version": "1.0.0",
+  "description": "RISU AI를 위한 다양한 플러그인 모음",
+  "scripts": {
+    "release:hddm": "node scripts/release.js hddm_edit",
+    "release:cbs": "node scripts/release.js cbs_intellisense", 
+    "release:lightboard": "node scripts/release.js lightboard_nai_preset_manager",
+    "release:all": "npm run release:hddm && npm run release:cbs && npm run release:lightboard",
+    "tag:hddm": "node scripts/create-tag.js hddm_edit",
+    "tag:cbs": "node scripts/create-tag.js cbs_intellisense",
+    "tag:lightboard": "node scripts/create-tag.js lightboard_nai_preset_manager",
+    "delete-tag:hddm": "node scripts/delete-tag.js hddm_edit",
+    "delete-tag:cbs": "node scripts/delete-tag.js cbs_intellisense",
+    "delete-tag:lightboard": "node scripts/delete-tag.js lightboard_nai_preset_manager",
+    "version:hddm": "node scripts/update-version.js hddm_edit",
+    "version:cbs": "node scripts/update-version.js cbs_intellisense",
+    "version:lightboard": "node scripts/update-version.js lightboard_nai_preset_manager"
+  },
+  "keywords": [
+    "risu",
+    "ai",
+    "plugins",
+    "chatbot",
+    "cbs",
+    "intellisense"
+  ],
+  "author": "RISU Plugins Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/risu-plugins.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/risu-plugins/issues"
+  },
+  "homepage": "https://github.com/your-username/risu-plugins#readme"
+}
