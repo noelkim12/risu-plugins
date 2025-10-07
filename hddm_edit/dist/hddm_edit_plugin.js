@@ -1,6 +1,6 @@
-//@name Handdam Edit Plugin_v0.4
-//@display-name Handdam Edit Plugin_v0.4
-//@version 0.4
+//@name Handdam Edit Plugin_v0.5
+//@display-name Handdam Edit Plugin_v0.5
+//@version 0.5
 //@description Handdam Edit Plugin for RISU AI
 
 // ----------------------------------------------------------------
@@ -196,7 +196,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     let current = element.parentElement;
     let depth = 0;
 
-    while (current && depth < 3) {
+    while (current && depth < 1) {
       // span.text 체크 - 탐색 중지
       if (
         current.tagName &&
@@ -269,14 +269,14 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
 
     // 마우스 호버 이벤트 추가 (wrapper의 opacity 제어 + overflow 변경)
     element.addEventListener("mouseenter", () => {
-      changedOverflows = setParentOverflowVisible(element);
+      // changedOverflows = setParentOverflowVisible(element);
       wrapperClone.style.opacity = "1";
     });
 
     element.addEventListener("mouseleave", () => {
       wrapperClone.style.opacity = "0";
-      restoreOverflow(changedOverflows);
-      changedOverflows = [];
+      // restoreOverflow(changedOverflows);
+      // changedOverflows = [];
     });
 
     // wrapper를 요소에 추가
@@ -582,14 +582,14 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
 
     // 마우스 호버 이벤트 추가 (wrapper의 opacity 제어 + overflow 변경)
     element.addEventListener("mouseenter", () => {
-      changedOverflows = setParentOverflowVisible(element);
+      // changedOverflows = setParentOverflowVisible(element);
       wrapperClone.style.opacity = "1";
     });
 
     element.addEventListener("mouseleave", () => {
       wrapperClone.style.opacity = "0";
-      restoreOverflow(changedOverflows);
-      changedOverflows = [];
+      // restoreOverflow(changedOverflows);
+      // changedOverflows = [];
     });
 
     // wrapper를 요소에 추가
