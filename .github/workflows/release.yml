@@ -2,7 +2,7 @@ name: Release Plugins
 
 permissions:
   contents: write
-  
+
 on:
   push:
     tags:
@@ -112,6 +112,6 @@ jobs:
           ### 📋 변경사항
           자세한 내용은 GitHub 리포지토리의 README.md를 참고하세요.
         draft: false
-        prerelease: false
+        prerelease: false 
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
