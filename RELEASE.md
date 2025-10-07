@@ -29,7 +29,7 @@ npm run release:all
 # 개별 플러그인 Tag 생성 (versions.json에서 자동으로 버전 읽어옴)
 npm run tag:hddm        # hddm-edit-v{version}
 npm run tag:cbs         # cbs-intellisense-v{version}
-npm run tag:lightboard  # lightboard-v{version}
+npm run tag:lightboard  # lightboard-nai-preset-v{version}
 ```
 
 **태그가 이미 존재하는 경우**:
@@ -59,7 +59,7 @@ Tag가 푸시되면 자동으로 GitHub Release가 생성됩니다:
 |---------|---------|------|
 | Handdam Edit Plugin | `hddm-edit-v{version}` | `hddm-edit-v0.4` |
 | CBS IntelliSense | `cbs-intellisense-v{version}` | `cbs-intellisense-v0.1` |
-| Lightboard NAI Preset Manager | `lightboard-v{version}` | `lightboard-v0.1` |
+| Lightboard NAI Preset Manager | `lightboard-nai-preset-v{version}` | `lightboard-nai-preset-v0.1` |
 
 ## 📦 Release 파일 구조
 

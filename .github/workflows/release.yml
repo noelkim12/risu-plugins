@@ -24,13 +24,13 @@ jobs:
       run: |
         if [[ "${{ github.ref }}" == refs/tags/hddm-edit-* ]]; then
           echo "plugin=hddm_edit" >> $GITHUB_OUTPUT
-          echo "version=${GITHUB_REF#refs/tags/hddm-edit-}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/hddm-edit-v}" >> $GITHUB_OUTPUT
         elif [[ "${{ github.ref }}" == refs/tags/cbs-intellisense-* ]]; then
           echo "plugin=cbs_intellisense" >> $GITHUB_OUTPUT
-          echo "version=${GITHUB_REF#refs/tags/cbs-intellisense-}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/cbs-intellisense-v}" >> $GITHUB_OUTPUT
         elif [[ "${{ github.ref }}" == refs/tags/lightboard-* ]]; then
           echo "plugin=lightboard_nai_preset_manager" >> $GITHUB_OUTPUT
-          echo "version=${GITHUB_REF#refs/tags/lightboard-}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/lightboard-nai-preset-v}" >> $GITHUB_OUTPUT
         fi
     
     - name: Load Plugin Config
@@ -74,7 +74,7 @@ jobs:
         elif [ "$PLUGIN" = "cbs_intellisense" ]; then
           cp cbs_intellisense/dist/cbs_intellisense.js "cbs-intellisense-v${VERSION}.js"
         elif [ "$PLUGIN" = "lightboard_nai_preset_manager" ]; then
-          cp lightboard_nai_preset_manager/dist/lightboard_nai_preset_manager.js "lightboard-v${VERSION}.js"
+          cp lightboard_nai_preset_manager/dist/lightboard_nai_preset_manager.js "lightboard-nai-preset-v${VERSION}.js"
         fi
         
         # Create file list for release
@@ -84,7 +84,7 @@ jobs:
         elif [ "$PLUGIN" = "cbs_intellisense" ]; then
           echo "cbs-intellisense-v${VERSION}.js" >> release_files.txt
         elif [ "$PLUGIN" = "lightboard_nai_preset_manager" ]; then
-          echo "lightboard-v${VERSION}.js" >> release_files.txt
+          echo "lightboard-nai-preset-v${VERSION}.js" >> release_files.txt
         fi
         
         # Debug: Show what files will be uploaded
@@ -103,9 +103,9 @@ jobs:
         name: ${{ steps.detect.outputs.plugin }} v${{ steps.detect.outputs.version }}
         body: |
           ## 📦 ${{ steps.detect.outputs.plugin }} v${{ steps.detect.outputs.version }}
-          
+
           ### 📥 설치 방법
-          1. `${{ steps.detect.outputs.plugin }}-v${{ steps.detect.outputs.version }}.js` 다운로드
+          1. `${{ steps.detect.outputs.plugin }}-${{ steps.detect.outputs.version }}.js` 다운로드
           2. RISU AI 플러그인 관리자에서 업로드
           3. 플러그인 활성화
           

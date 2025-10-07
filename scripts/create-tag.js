@@ -29,7 +29,7 @@ function createTag(pluginName) {
   } else if (pluginName === 'cbs_intellisense') {
     tagName = `cbs-intellisense-v${version}`;
   } else if (pluginName === 'lightboard_nai_preset_manager') {
-    tagName = `lightboard-v${version}`;
+    tagName = `lightboard-nai-preset-v${version}`;
   } else {
     tagName = `${pluginName}-v${version}`;
   }
