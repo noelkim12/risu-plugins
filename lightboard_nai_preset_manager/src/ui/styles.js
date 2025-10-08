@@ -132,7 +132,28 @@ export const STYLES = `
     color:#6b7280;
     opacity:.8;
   }
-
+  .lnpm-btn-container {
+    gap: 8px;
+    text-align: right;
+  }
+  .lnpm-btn-save {
+    padding: 6px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .lnpm-btn-close {
+    padding: 6px 12px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
   /* 탭 */
   .lnpm-tabs-container {
     flex-shrink:0;

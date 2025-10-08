@@ -41,19 +41,21 @@ export class PresetManager {
     }).filter(item => item.comment.includes("프리셋"));
 
     this.presets.forEach(preset => {
-      preset.author = preset.content.split("[Author] ")[1].split("[")[0];
-      preset.quality = preset.content.split("[Quality] ")[1].split("[")[0];
-      preset.negative = preset.content.split("[Negative] ")[1].split("[")[0];
+      preset.author = preset.content.split("[Author] ")[1].split("[")[0].trim();
+      preset.quality = preset.content.split("[Quality] ")[1].split("[")[0].trim();
+      preset.negative = preset.content.split("[Negative] ")[1].split("[")[0].trim();
     });
 
     return true;
   }
 
   getPresets() {
+    this.initialize();
     return this.presets;
   }
 
   getPresetById(id) {
+    this.initialize();
     return this.presets.find(preset => preset.id == id);
   }
 
@@ -77,6 +79,6 @@ export class PresetManager {
   }
 
   buildContent(author, quality, negative) {
-    return `[Author] ${author} [Quality] ${quality} [Negative] ${negative}`;
+    return `[Author] ${author.trim()} \n[Quality] ${quality.trim()} \n[Negative] ${negative.trim()}`;
   }
 }

@@ -219,19 +219,21 @@ class PresetManager {
     }).filter(item => item.comment.includes("프리셋"));
 
     this.presets.forEach(preset => {
-      preset.author = preset.content.split("[Author] ")[1].split("[")[0];
-      preset.quality = preset.content.split("[Quality] ")[1].split("[")[0];
-      preset.negative = preset.content.split("[Negative] ")[1].split("[")[0];
+      preset.author = preset.content.split("[Author] ")[1].split("[")[0].trim();
+      preset.quality = preset.content.split("[Quality] ")[1].split("[")[0].trim();
+      preset.negative = preset.content.split("[Negative] ")[1].split("[")[0].trim();
     });
 
     return true;
   }
 
   getPresets() {
+    this.initialize();
     return this.presets;
   }
 
   getPresetById(id) {
+    this.initialize();
     return this.presets.find(preset => preset.id == id);
   }
 
@@ -255,7 +257,7 @@ class PresetManager {
   }
 
   buildContent(author, quality, negative) {
-    return `[Author] ${author} [Quality] ${quality} [Negative] ${negative}`;
+    return `[Author] ${author.trim()} \n[Quality] ${quality.trim()} \n[Negative] ${negative.trim()}`;
   }
 }
 
@@ -394,7 +396,28 @@ const STYLES = `
     color:#6b7280;
     opacity:.8;
   }
-
+  .lnpm-btn-container {
+    gap: 8px;
+    text-align: right;
+  }
+  .lnpm-btn-save {
+    padding: 6px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .lnpm-btn-close {
+    padding: 6px 12px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
   /* 탭 */
   .lnpm-tabs-container {
     flex-shrink:0;
@@ -1387,7 +1410,8 @@ class LnpmFormPage extends HTMLElement {
     this.activeTab = 0;
   }
 
-  set config({ presetManager, presetId }) {
+  set config({ moduleBox, presetManager, presetId }) {
+    this.moduleBox = moduleBox;
     this.presetManager = presetManager;
     this.presetId = presetId;
     this.render();
@@ -1426,6 +1450,12 @@ class LnpmFormPage extends HTMLElement {
         });
       }
     });
+    this.querySelector("#lnpm-btn-save").addEventListener("click", () => {
+      this.moduleBox.close();
+    });
+    this.querySelector("#lnpm-btn-close").addEventListener("click", () => {
+      this.moduleBox.close();
+    });
   }
 
   handleFieldChange(field, value) {
@@ -1460,6 +1490,10 @@ class LnpmFormPage extends HTMLElement {
         <div class="lnpm-field">
           <label for="negative">Negative</label>
           <textarea id="negative" rows="4" placeholder="lowres, blurry, extra fingers">${negative}</textarea>
+        </div>
+        <div class="lnpm-btn-container">
+          <button id="lnpm-btn-save" class="lnpm-btn-save">저장</button>
+          <button id="lnpm-btn-close" class="lnpm-btn-close">닫기</button>
         </div>
       </div>
     `;
@@ -1995,8 +2029,8 @@ class LightboardNAIPresetManager {
           title: "LIGHTBOARD NAI 프리셋",
           x: "center",
           y: "center",
-          width: Math.min(650, window.innerWidth * 0.9) + "px",
-          height: Math.min(650, window.innerHeight * 0.8) + "px",
+          width: Math.min(750, window.innerWidth * 0.9) + "px",
+          height: Math.min(750, window.innerHeight * 0.8) + "px",
           minwidth: "320px",
           minheight: "400px",
           mount: this.lbNaiModuleBoxRoot,
@@ -2080,6 +2114,7 @@ class LightboardNAIPresetManager {
     // 폼 페이지 생성
     const formEl = document.createElement("lnpm-form-page");
     formEl.config = {
+      moduleBox: this.lbNaiModuleBox,
       presetManager: this.presetManager,
       presetId: preset.id,
     };

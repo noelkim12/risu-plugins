@@ -10,7 +10,8 @@ export class LnpmFormPage extends HTMLElement {
     this.activeTab = 0;
   }
 
-  set config({ presetManager, presetId }) {
+  set config({ moduleBox, presetManager, presetId }) {
+    this.moduleBox = moduleBox;
     this.presetManager = presetManager;
     this.presetId = presetId;
     this.render();
@@ -49,6 +50,12 @@ export class LnpmFormPage extends HTMLElement {
         });
       }
     });
+    this.querySelector("#lnpm-btn-save").addEventListener("click", () => {
+      this.moduleBox.close();
+    });
+    this.querySelector("#lnpm-btn-close").addEventListener("click", () => {
+      this.moduleBox.close();
+    });
   }
 
   handleFieldChange(field, value) {
@@ -83,6 +90,10 @@ export class LnpmFormPage extends HTMLElement {
         <div class="lnpm-field">
           <label for="negative">Negative</label>
           <textarea id="negative" rows="4" placeholder="lowres, blurry, extra fingers">${negative}</textarea>
+        </div>
+        <div class="lnpm-btn-container">
+          <button id="lnpm-btn-save" class="lnpm-btn-save">저장</button>
+          <button id="lnpm-btn-close" class="lnpm-btn-close">닫기</button>
         </div>
       </div>
     `;
