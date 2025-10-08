@@ -1,5 +1,4 @@
 # Handdam Edit Plugin v0.4
-![intro1](docs/hddm_intro1.gif)
 RISU AI를 위한 채팅 메시지 편집 플러그인
 
 ## 주요 기능

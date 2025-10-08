@@ -1,5 +1,4 @@
 # Plugin Drag & Drop v0.1
-![intro1](docs/plugin_dnd_intro1.gif)
 RISU AI를 위한 플러그인 드래그 앤 드롭 설치 플러그인
 (플러그인 로드 이후 오류메세지 출력되나, 기능 이상없음)
 

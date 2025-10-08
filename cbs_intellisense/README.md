@@ -1,6 +1,4 @@
-
 # CBS IntelliSense v0.1
-![intro1](docs/cbs_intellisense_intro1.gif)
 RISU AI를 위한 CBS(Curly Braced Syntaxes) 코드 편집기 플러그인
 
 ## 주요 기능
