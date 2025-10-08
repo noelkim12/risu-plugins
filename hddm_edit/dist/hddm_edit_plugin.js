@@ -1,7 +1,8 @@
 //@name Handdam Edit Plugin
-//@display-name Handdam Edit Plugin_v0.6
-//@version 0.6
+//@display-name Handdam Edit Plugin_v0.7
+//@version 0.7
 //@description Handdam Edit Plugin for RISU AI
+//@args excludeBotName string
 
 // ----------------------------------------------------------------
 // LBI 긴빠이
@@ -41,6 +42,8 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
   let intersectionObserver = null;
   let mutationObserver = null;
   let createdButtons = [];
+  const excludeBotStr = risuAPI.getArg("HANDDM EDIT::excludeBotName") == 1;
+  const EXCLUDE_BOT_NAMES = excludeBotStr ? excludeBotStr.split(",") : [];
 
   const { getChar, onUnload } = globalThis.__pluginApis__;
 

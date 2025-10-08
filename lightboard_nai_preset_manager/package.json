@@ -1,0 +1,21 @@
+{
+  "name": "lightboard-nai-preset-manager",
+  "version": "0.1.0",
+  "description": "Lightboard NAI Preset Manager for RISU AI",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "terser-webpack-plugin": "^5.3.9"
+  },
+  "dependencies": {
+    "idb": "^8.0.0",
+    "browser-image-compression": "^2.0.2",
+    "winbox": "^0.2.82"
+  }
+}
