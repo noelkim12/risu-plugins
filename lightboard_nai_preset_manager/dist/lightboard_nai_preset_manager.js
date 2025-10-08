@@ -264,6 +264,10 @@ class PresetManager {
 ;// ./src/ui/styles.js
 const STYLES = `
   /* 기본 스타일 */
+  .lnpm-box {
+    z-index:99999 !important;
+    pointer-events: auto;
+  }
   .lnpm-wrap {
     display:flex;
     flex-direction:column;
@@ -271,6 +275,8 @@ const STYLES = `
     height:100%;
     background:#141823;
     overflow:hidden; /* 자식 요소에서 스크롤 처리 */
+    z-index:99999;
+    pointer-events: auto;
   }
   .lnpm-toolbar {
     display:flex;
@@ -2019,7 +2025,7 @@ class LightboardNAIPresetManager {
           minheight: "80%",
           mount: this.lbNaiModuleBoxRoot,
           background: "#0f131a",
-          class: ["no-full", "no-resize", "no-max", "no-min"],
+          class: ["no-full", "no-resize", "no-max", "no-min", "lnpm-box"],
           onclose: () => {
             this.lbNaiModuleBox = null;
             location.hash = "";
@@ -2029,13 +2035,13 @@ class LightboardNAIPresetManager {
           title: "LIGHTBOARD NAI 프리셋",
           x: "center",
           y: "center",
-          width: Math.min(750, window.innerWidth * 0.9) + "px",
-          height: Math.min(750, window.innerHeight * 0.8) + "px",
+          width: Math.min(650, window.innerWidth * 0.9) + "px",
+          height: Math.min(650, window.innerHeight * 0.8) + "px",
           minwidth: "320px",
           minheight: "400px",
           mount: this.lbNaiModuleBoxRoot,
           background: "#0f131a",
-          class: ["no-full", "no-max", "no-min"],
+          class: ["no-full", "no-max", "no-min", "lnpm-box"],
           onclose: () => {
             this.lbNaiModuleBox = null;
             location.hash = "";

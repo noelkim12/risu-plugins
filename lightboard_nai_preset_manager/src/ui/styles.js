@@ -1,5 +1,9 @@
 export const STYLES = `
   /* 기본 스타일 */
+  .lnpm-box {
+    z-index:99999 !important;
+    pointer-events: auto;
+  }
   .lnpm-wrap {
     display:flex;
     flex-direction:column;
@@ -7,6 +11,8 @@ export const STYLES = `
     height:100%;
     background:#141823;
     overflow:hidden; /* 자식 요소에서 스크롤 처리 */
+    z-index:99999;
+    pointer-events: auto;
   }
   .lnpm-toolbar {
     display:flex;

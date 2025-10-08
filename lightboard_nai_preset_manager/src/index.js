@@ -89,7 +89,7 @@ class LightboardNAIPresetManager {
           minheight: "80%",
           mount: this.lbNaiModuleBoxRoot,
           background: "#0f131a",
-          class: ["no-full", "no-resize", "no-max", "no-min"],
+          class: ["no-full", "no-resize", "no-max", "no-min", "lnpm-box"],
           onclose: () => {
             this.lbNaiModuleBox = null;
             location.hash = "";
@@ -99,13 +99,13 @@ class LightboardNAIPresetManager {
           title: "LIGHTBOARD NAI 프리셋",
           x: "center",
           y: "center",
-          width: Math.min(750, window.innerWidth * 0.9) + "px",
-          height: Math.min(750, window.innerHeight * 0.8) + "px",
+          width: Math.min(650, window.innerWidth * 0.9) + "px",
+          height: Math.min(650, window.innerHeight * 0.8) + "px",
           minwidth: "320px",
           minheight: "400px",
           mount: this.lbNaiModuleBoxRoot,
           background: "#0f131a",
-          class: ["no-full", "no-max", "no-min"],
+          class: ["no-full", "no-max", "no-min", "lnpm-box"],
           onclose: () => {
             this.lbNaiModuleBox = null;
             location.hash = "";
