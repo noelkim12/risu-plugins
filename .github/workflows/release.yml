@@ -35,6 +35,9 @@ jobs:
         elif [[ "${{ github.ref }}" == refs/tags/plugin-dnd-* ]]; then
           echo "plugin=plugin_dnd" >> $GITHUB_OUTPUT
           echo "version=${GITHUB_REF#refs/tags/plugin-dnd-v}" >> $GITHUB_OUTPUT
+        elif [[ "${{ github.ref }}" == refs/tags/risu-typewrite-* ]]; then
+          echo "plugin=risu_typewrite" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/risu-typewrite-v}" >> $GITHUB_OUTPUT
         fi
     
     - name: Load Plugin Config
@@ -67,6 +70,8 @@ jobs:
           cp lightboard_nai_preset_manager/dist/lightboard_nai_preset_manager.js release/
         elif [ "$PLUGIN" = "plugin_dnd" ]; then
           cp plugin_dnd/dist/plugin_dnd.js release/
+        elif [ "$PLUGIN" = "risu_typewrite" ]; then
+          cp risu_typewrite/dist/risu_typewrite.js release/
         fi
         
         # Create zip file
@@ -83,6 +88,8 @@ jobs:
           cp lightboard_nai_preset_manager/dist/lightboard_nai_preset_manager.js "lightboard-nai-preset-v${VERSION}.js"
         elif [ "$PLUGIN" = "plugin_dnd" ]; then
           cp plugin_dnd/dist/plugin_dnd.js "plugin-dnd-v${VERSION}.js"
+        elif [ "$PLUGIN" = "risu_typewrite" ]; then
+          cp risu_typewrite/dist/risu_typewrite.js "risu-typewrite-v${VERSION}.js"
         fi
         
         # Create file list for release
@@ -95,6 +102,8 @@ jobs:
           echo "lightboard-nai-preset-v${VERSION}.js" >> release_files.txt
         elif [ "$PLUGIN" = "plugin_dnd" ]; then
           echo "plugin-dnd-v${VERSION}.js" >> release_files.txt
+        elif [ "$PLUGIN" = "risu_typewrite" ]; then
+          echo "risu-typewrite-v${VERSION}.js" >> release_files.txt
         fi
         
         # Debug: Show what files will be uploaded
