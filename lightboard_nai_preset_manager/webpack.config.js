@@ -33,8 +33,8 @@ module.exports = {
   plugins: [
     new webpack.BannerPlugin({
       banner: `//@name Lightboard NAI Preset Manager
-//@display-name Lightboard NAI Preset Manager_v0.2
-//@version 0.2
+//@display-name Lightboard NAI Preset Manager_v0.3
+//@version 0.3
 //@description Lightboard NAI Preset Manager for RISU AI`,
       raw: true
     })

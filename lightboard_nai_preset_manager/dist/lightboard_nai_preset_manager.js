@@ -1,6 +1,6 @@
 //@name Lightboard NAI Preset Manager
-//@display-name Lightboard NAI Preset Manager_v0.2
-//@version 0.2
+//@display-name Lightboard NAI Preset Manager_v0.3
+//@version 0.3
 //@description Lightboard NAI Preset Manager for RISU AI
 var LightboardNAIPresetManager;
 /******/ (() => { // webpackBootstrap
@@ -59,7 +59,7 @@ class RisuAPI {
 /* harmony export */ });
 /* unused harmony export PLUGIN_VERSION */
 const PLUGIN_NAME = "LIGHTBOARD NAI PRESET MANAGER";
-const PLUGIN_VERSION = "v0.2";
+const PLUGIN_VERSION = "v0.3";
 const ALLOWED_NAMESPACE_ARRAY = ["lightboard-NAI", "lightboard-WAN"];
 const LNPM_BUTTON_CLASSNAME = "lnpm-button-appended";
 

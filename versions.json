@@ -15,7 +15,7 @@
   },
   "lightboard_nai_preset_manager": {
     "name": "Lightboard NAI Preset Manager",
-    "version": "0.2",
+    "version": "0.3",
     "files": [
       "dist/lightboard_nai_preset_manager.js"
     ]
