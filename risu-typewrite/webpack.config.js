@@ -6,10 +6,10 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'lightboard_nai_preset_manager.js',
+    filename: 'risu-typewrite.js',
     library: {
       type: 'var',
-      name: 'LightboardNAIPresetManager'
+      name: 'RisuTypewrite'
     },
     clean: true
   },
@@ -32,26 +32,11 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: `//@name Lightboard NAI Preset Manager
-//@display-name Lightboard NAI Preset Manager_v0.2
-//@version 0.2
-//@description Lightboard NAI Preset Manager for RISU AI`,
+      banner: `//@name Risu Typewrite
+//@display-name Risu Typewrite_v0.1
+//@version 0.1
+//@description Risu Typewrite for RISU AI`,
       raw: true
     })
   ],
-  // Babel 없이 ES6 모듈 직접 사용
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.js$/,
-  //       exclude: /node_modules/,
-  //       use: {
-  //         loader: 'babel-loader',
-  //         options: {
-  //           presets: ['@babel/preset-env']
-  //         }
-  //       }
-  //     }
-  //   ]
-  // }
 };

@@ -219,9 +219,9 @@ class PresetManager {
     }).filter(item => item.comment.includes("프리셋"));
 
     this.presets.forEach(preset => {
-      preset.author = preset.content.split("[Author] ")[1].split("[")[0].trim();
-      preset.quality = preset.content.split("[Quality] ")[1].split("[")[0].trim();
-      preset.negative = preset.content.split("[Negative] ")[1].split("[")[0].trim();
+      preset.author = preset.content.split("[Author] ")[1].split("[Quality]")[0].trim();
+      preset.quality = preset.content.split("[Quality] ")[1].split("[Negative]")[0].trim();
+      preset.negative = preset.content.split("[Negative] ")[1].trim();
     });
 
     return true;

@@ -1,0 +1,20 @@
+{
+  "name": "Risu-Typewrite",
+  "version": "0.1.0",
+  "description": "Risu Typewrite for RISU AI",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "webpack --mode production --watch",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "terser-webpack-plugin": "^5.3.9"
+  },
+  "dependencies": {
+    "idb": "^8.0.0",
+    "winbox": "^0.2.82"
+  }
+}
