@@ -1957,6 +1957,13 @@ async function recordTypingSession(sessionData) {
   totalStats.maxAccuracy = Math.max(totalStats.maxAccuracy, accuracy);
   totalStats.points += characters; // 글자 수만큼 포인트 적립
   totalStats.totalSessions += 1;
+  
+  // localStorage에 포인트 저장
+  try {
+    localStorage.setItem('risu-point', totalStats.points.toString());
+  } catch (error) {
+    console.warn('Failed to save points to localStorage:', error);
+  }
 
   // 전체 평균 재계산 (누적 평균 방식)
   const totalSessionCount = totalStats.totalSessions;
@@ -2034,11 +2041,30 @@ async function getAllDailyStats(limit = null) {
 }
 
 /**
- * 포인트 조회
+ * 포인트 조회 (IndexedDB 우선, localStorage 백업)
  * @returns {Promise<number>}
  */
 async function getPoints() {
   const totalStats = await getTotalStats();
+  
+  // IndexedDB에 데이터가 있으면 사용
+  if (totalStats.points > 0) {
+    return totalStats.points;
+  }
+  
+  // IndexedDB에 데이터가 없으면 localStorage에서 확인
+  try {
+    const localPoints = localStorage.getItem('risu-point');
+    if (localPoints !== null) {
+      const points = parseInt(localPoints, 10);
+      if (!isNaN(points) && points >= 0) {
+        return points;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to read points from localStorage:', error);
+  }
+  
   return totalStats.points;
 }
 
@@ -2081,6 +2107,13 @@ async function resetAllStats() {
     totalSessions: 0,
     updatedAt: Date.now(),
   });
+  
+  // localStorage 포인트 초기화
+  try {
+    localStorage.setItem('risu-point', '0');
+  } catch (error) {
+    console.warn('Failed to reset points in localStorage:', error);
+  }
 }
 
 /**
@@ -2151,6 +2184,13 @@ async function recalculateTotalStats() {
   };
 
   await db.put(STORE_TOTAL, totalStats);
+  
+  // localStorage에 포인트 저장
+  try {
+    localStorage.setItem('risu-point', totalStats.points.toString());
+  } catch (error) {
+    console.warn('Failed to save points to localStorage:', error);
+  }
 }
 
 /**
