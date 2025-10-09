@@ -33,5 +33,12 @@
     "files": [
       "dist/risu_typewrite.js"
     ]
+  },
+  "risu_blackmarket": {
+    "name": "Risu Blackmarket",
+    "version": "0.1",
+    "files": [
+      "dist/risu_blackmarket.js"
+    ]
   }
 }

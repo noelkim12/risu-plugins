@@ -8,22 +8,26 @@
     "release:lb-nai-preset": "node scripts/release.js lightboard_nai_preset_manager",
     "release:plugin-dnd": "node scripts/release.js plugin_dnd",
     "release:risu-typewrite": "node scripts/release.js risu_typewrite",
+    "release:risu-blackmarket": "node scripts/release.js risu_blackmarket",
     "release:all": "npm run release:hddm && npm run release:cbs && npm run release:lb-nai-preset && npm run release:plugin-dnd",
     "tag:hddm": "node scripts/create-tag.js hddm_edit",
     "tag:cbs": "node scripts/create-tag.js cbs_intellisense",
     "tag:lb-nai-preset": "node scripts/create-tag.js lightboard_nai_preset_manager",
     "tag:plugin-dnd": "node scripts/create-tag.js plugin_dnd",
     "tag:risu-typewrite": "node scripts/create-tag.js risu_typewrite",
+    "tag:risu-blackmarket": "node scripts/create-tag.js risu_blackmarket",
     "delete-tag:hddm": "node scripts/delete-tag.js hddm_edit",
     "delete-tag:cbs": "node scripts/delete-tag.js cbs_intellisense",
     "delete-tag:lb-nai-preset": "node scripts/delete-tag.js lightboard_nai_preset_manager",
     "delete-tag:plugin-dnd": "node scripts/delete-tag.js plugin_dnd",
     "delete-tag:risu-typewrite": "node scripts/delete-tag.js risu_typewrite",
+    "delete-tag:risu-blackmarket": "node scripts/delete-tag.js risu_blackmarket",
     "version:hddm": "node scripts/update-version.js hddm_edit",
     "version:cbs": "node scripts/update-version.js cbs_intellisense",
     "version:lb-nai-preset": "node scripts/update-version.js lightboard_nai_preset_manager",
     "version:plugin-dnd": "node scripts/update-version.js plugin_dnd",
-    "version:risu-typewrite": "node scripts/update-version.js risu_typewrite"
+    "version:risu-typewrite": "node scripts/update-version.js risu_typewrite",
+    "version:risu-blackmarket": "node scripts/update-version.js risu_blackmarket"
   },
   "keywords": [
     "risu",
@@ -32,7 +36,8 @@
     "chatbot",
     "cbs",
     "intellisense",
-    "risu-typewrite"
+    "risu-typewrite",
+    "risu-blackmarket"
   ],
   "author": "Noel Kim",
   "license": "MIT",

@@ -10,6 +10,8 @@ on:
       - 'cbs-intellisense-*'
       - 'lightboard-*'
       - 'plugin-dnd-*'
+      - 'risu-typewrite-*'
+      - 'risu-blackmarket-*'
 
 jobs:
   release:
@@ -38,6 +40,9 @@ jobs:
         elif [[ "${{ github.ref }}" == refs/tags/risu-typewrite-* ]]; then
           echo "plugin=risu_typewrite" >> $GITHUB_OUTPUT
           echo "version=${GITHUB_REF#refs/tags/risu-typewrite-v}" >> $GITHUB_OUTPUT
+        elif [[ "${{ github.ref }}" == refs/tags/risu-blackmarket-* ]]; then
+          echo "plugin=risu_blackmarket" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/risu-blackmarket-v}" >> $GITHUB_OUTPUT
         fi
     
     - name: Load Plugin Config
@@ -72,6 +77,8 @@ jobs:
           cp plugin_dnd/dist/plugin_dnd.js release/
         elif [ "$PLUGIN" = "risu_typewrite" ]; then
           cp risu_typewrite/dist/risu_typewrite.js release/
+        elif [ "$PLUGIN" = "risu_blackmarket" ]; then
+          cp risu_blackmarket/dist/risu_blackmarket.js release/
         fi
         
         # Create zip file
@@ -90,6 +97,8 @@ jobs:
           cp plugin_dnd/dist/plugin_dnd.js "plugin-dnd-v${VERSION}.js"
         elif [ "$PLUGIN" = "risu_typewrite" ]; then
           cp risu_typewrite/dist/risu_typewrite.js "risu-typewrite-v${VERSION}.js"
+        elif [ "$PLUGIN" = "risu_blackmarket" ]; then
+          cp risu_blackmarket/dist/risu_blackmarket.js "risu-blackmarket-v${VERSION}.js"
         fi
         
         # Create file list for release
@@ -104,6 +113,8 @@ jobs:
           echo "plugin-dnd-v${VERSION}.js" >> release_files.txt
         elif [ "$PLUGIN" = "risu_typewrite" ]; then
           echo "risu-typewrite-v${VERSION}.js" >> release_files.txt
+        elif [ "$PLUGIN" = "risu_blackmarket" ]; then
+          echo "risu-blackmarket-v${VERSION}.js" >> release_files.txt
         fi
         
         # Debug: Show what files will be uploaded
