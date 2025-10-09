@@ -149,11 +149,11 @@ class RisuTypewrite {
       "div.absolute.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
     );
     if (burgerEl && !burgerEl.classList.contains(RT_BUTTON_CLASSNAME)) {
-      const presetDiv = document.createElement("rt-menu-button");
-      burgerEl.addEventListener("click", () => {
+      const wtButtonDiv = document.createElement("rt-menu-button");
+      wtButtonDiv.addEventListener("click", () => {
         this.openModuleBox();
       });
-      burgerEl.appendChild(presetDiv);
+      burgerEl.appendChild(wtButtonDiv);
       burgerEl.classList.add(RT_BUTTON_CLASSNAME);
     }
   }
