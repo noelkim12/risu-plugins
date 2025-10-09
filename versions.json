@@ -1,7 +1,7 @@
 {
   "hddm_edit": {
     "name": "Handdam Edit Plugin",
-    "version": "0.6",
+    "version": "0.7",
     "files": [
       "dist/hddm_edit_plugin.js"
     ]

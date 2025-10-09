@@ -1,6 +1,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
+const { PLUGIN_NAME, PLUGIN_VERSION } = require('./src/constants');
 
 module.exports = {
   entry: './src/index.js',
@@ -32,26 +33,11 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: `//@name Lightboard NAI Preset Manager
-//@display-name Lightboard NAI Preset Manager_v0.3
-//@version 0.3
-//@description Lightboard NAI Preset Manager for RISU AI`,
+      banner: `//@name ${PLUGIN_NAME}
+//@display-name ${PLUGIN_NAME}_v${PLUGIN_VERSION}
+//@version ${PLUGIN_VERSION}
+//@description ${PLUGIN_NAME} for RISU AI`,
       raw: true
     })
   ],
-  // Babel 없이 ES6 모듈 직접 사용
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.js$/,
-  //       exclude: /node_modules/,
-  //       use: {
-  //         loader: 'babel-loader',
-  //         options: {
-  //           presets: ['@babel/preset-env']
-  //         }
-  //       }
-  //     }
-  //   ]
-  // }
 };

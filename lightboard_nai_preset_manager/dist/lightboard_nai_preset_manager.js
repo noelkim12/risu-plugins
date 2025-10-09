@@ -58,8 +58,8 @@ class RisuAPI {
 /* harmony export */   xY: () => (/* binding */ ALLOWED_NAMESPACE_ARRAY)
 /* harmony export */ });
 /* unused harmony export PLUGIN_VERSION */
-const PLUGIN_NAME = "LIGHTBOARD NAI PRESET MANAGER";
-const PLUGIN_VERSION = "v0.3";
+const PLUGIN_NAME = "Lightboard NAI Preset Manager";
+const PLUGIN_VERSION = "0.3";
 const ALLOWED_NAMESPACE_ARRAY = ["lightboard-NAI", "lightboard-WAN"];
 const LNPM_BUTTON_CLASSNAME = "lnpm-button-appended";
 

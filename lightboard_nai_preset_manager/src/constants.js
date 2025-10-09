@@ -1,5 +1,5 @@
-export const PLUGIN_NAME = "LIGHTBOARD NAI PRESET MANAGER";
-export const PLUGIN_VERSION = "v0.3";
+export const PLUGIN_NAME = "Lightboard NAI Preset Manager";
+export const PLUGIN_VERSION = "0.3";
 export const ALLOWED_NAMESPACE_ARRAY = ["lightboard-NAI", "lightboard-WAN"];
 export const LNPM_BUTTON_CLASSNAME = "lnpm-button-appended";
 
