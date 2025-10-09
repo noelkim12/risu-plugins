@@ -88,7 +88,6 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
   `;
   document.head.appendChild(style);
 
-  
   // 버튼 래퍼 생성
   const buttonWrapper = document.createElement("div");
   buttonWrapper.className = "hddm-button-wrapper";
@@ -101,7 +100,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
   editButton.className = "chat-modi-btn hddm-edit-button";
 
   const TARGET_SELECTOR =
-    "span.text p, span.text li, div.x-risu-regex-quote-block, div.x-risu-regex-thought-block, div.x-risu-regex-sound-block, div.x-risu-message, div.x-risu-lb-nai-character-tags, div.x-risu-lb-nai-comp-tags";
+    "span.text > p, span.text > ul li, span.text > ol li, span.text > div.x-risu-regex-quote-block, span.text > div.x-risu-regex-thought-block, span.text > div.x-risu-regex-sound-block, span.text > div.x-risu-message, div.x-risu-lb-nai-character-tags, div.x-risu-lb-nai-comp-tags";
 
   /**
    * TARGET_SELECTOR를 활용한 요소 검증 함수
@@ -191,41 +190,6 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
   }
 
   /**
-   * 부모 요소들의 overflow를 visible로 변경 (3계층까지)
-   * @returns 변경된 요소들과 원래 값을 저장한 배열
-   */
-  function setParentOverflowVisible(element) {
-    const changedElements = [];
-    let current = element.parentElement;
-    let depth = 0;
-
-    while (current && depth < 1) {
-      // span.text 체크 - 탐색 중지
-      if (
-        current.tagName &&
-        current.tagName.toLowerCase() === "span" &&
-        current.classList.contains("text")
-      ) {
-        break;
-      }
-
-      const currentOverflow = window.getComputedStyle(current).overflow;
-      if (currentOverflow !== "visible") {
-        changedElements.push({
-          element: current,
-          originalOverflow: current.style.overflow || "",
-        });
-        current.style.overflow = "visible";
-      }
-
-      current = current.parentElement;
-      depth++;
-    }
-
-    return changedElements;
-  }
-
-  /**
    * overflow 속성 복원
    */
   function restoreOverflow(changedElements) {
@@ -254,6 +218,11 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
       return;
     }
 
+    let closestRisuChatDiv = element.closest("div.risu-chat");
+    if (closestRisuChatDiv) {
+      let chatIdx = closestRisuChatDiv.getAttribute("data-chat-index");
+      getChar().chats[getChar().chatPage].message[chatIdx].data
+    }
     // 요소 자체를 relative로 설정
     if (getComputedStyle(element).position === "static") {
       element.style.position = "relative";
@@ -267,19 +236,13 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     // button을 wrapper에 추가
     wrapperClone.appendChild(buttonClone);
 
-    // overflow 제어를 위한 저장소
-    let changedOverflows = [];
-
     // 마우스 호버 이벤트 추가 (wrapper의 opacity 제어 + overflow 변경)
     element.addEventListener("mouseenter", () => {
-      // changedOverflows = setParentOverflowVisible(element);
       wrapperClone.style.opacity = "1";
     });
 
     element.addEventListener("mouseleave", () => {
       wrapperClone.style.opacity = "0";
-      // restoreOverflow(changedOverflows);
-      // changedOverflows = [];
     });
 
     // wrapper를 요소에 추가
@@ -537,8 +500,10 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     // 전체 메시지 데이터에서 원본 HTML을 새 HTML로 교체
     let oldFullText =
       getChar().chats[getChar().chatPage].message[chatIndex].data;
-    oldFullText = oldFullText.replaceAll(originalText, newText);
-    getChar().chats[getChar().chatPage].message[chatIndex].data = oldFullText;
+
+
+    let replacedText = oldFullText.replaceAll(originalText, newText);
+    getChar().chats[getChar().chatPage].message[chatIndex].data = replacedText;
     // 여기에 실제 저장 로직을 구현할 수 있습니다
 
     // 편집 모드 종료 및 새 HTML로 업데이트
@@ -580,19 +545,13 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     // button을 wrapper에 추가
     wrapperClone.appendChild(buttonClone);
 
-    // overflow 제어를 위한 저장소
-    let changedOverflows = [];
-
     // 마우스 호버 이벤트 추가 (wrapper의 opacity 제어 + overflow 변경)
     element.addEventListener("mouseenter", () => {
-      // changedOverflows = setParentOverflowVisible(element);
       wrapperClone.style.opacity = "1";
     });
 
     element.addEventListener("mouseleave", () => {
       wrapperClone.style.opacity = "0";
-      // restoreOverflow(changedOverflows);
-      // changedOverflows = [];
     });
 
     // wrapper를 요소에 추가
