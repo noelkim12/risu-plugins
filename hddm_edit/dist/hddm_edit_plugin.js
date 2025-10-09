@@ -1,6 +1,6 @@
 //@name Handdam Edit Plugin
-//@display-name Handdam Edit Plugin_v0.7
-//@version 0.7
+//@display-name Handdam Edit Plugin_v0.8
+//@version 0.8
 //@description Handdam Edit Plugin for RISU AI
 //@args excludeBotName string
 
@@ -49,6 +49,9 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
   // CSS 스타일 추가
   const style = document.createElement("style");
   style.textContent = `
+    .x-risu-lb-nai-character-card, .x-risu-lb-nai-comp-card {
+      overflow: visible !important;
+    }
     .hddm-btn-appended:hover {
       outline: 1px solid rgba(100, 100, 100, 0.2);
       outline-offset: 2px;
@@ -56,7 +59,8 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     .hddm-button-wrapper {
       position: absolute;
       top: inherit;
-      left: -30px;
+      left: 0px;
+      margin-top: 30px;
       transform: translateY(-100%);
       opacity: 0;
       transition: opacity 0.2s ease;
@@ -98,8 +102,26 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
   editButton.title = "수정";
   editButton.className = "chat-modi-btn hddm-edit-button";
 
-  const TARGET_SELECTOR =
-    "span.text > h3, span.text > h2, span.text > h1, span.text > p, span.text > ul > li, span.text > ol li, span.text > div.x-risu-regex-quote-block, span.text > div.x-risu-regex-thought-block, span.text > div.x-risu-regex-sound-block, span.text div.x-risu-message, div.x-risu-lb-nai-character-tags, div.x-risu-lb-nai-comp-tags";
+  const TARGET_SELECTOR = [
+    "span.text > h3",
+    "span.text > h2",
+    "span.text > h1",
+    "span.text > p",
+    "span.text > ul",
+    "span.text > ol",
+    "span.text > div h3",
+    "span.text > div h2",
+    "span.text > div h1",
+    "span.text > div p",
+    "span.text > div ul",
+    "span.text > div ol",
+    "span.text div.x-risu-regex-quote-block",
+    "span.text div.x-risu-regex-thought-block",
+    "span.text div.x-risu-regex-sound-block",
+    "span.text div.x-risu-message",
+    "div.x-risu-lb-nai-character-tags",
+    "div.x-risu-lb-nai-comp-tags",
+  ];
 
   /**
    * TARGET_SELECTOR를 활용한 요소 검증 함수
@@ -108,9 +130,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     if (!element || !element.classList) return false;
 
     // TARGET_SELECTOR를 파싱하여 동적으로 패턴 생성
-    const selectors = TARGET_SELECTOR.split(", ").map((selector) =>
-      selector.trim()
-    );
+    const selectors = TARGET_SELECTOR.map((selector) => selector.trim());
 
     for (const selector of selectors) {
       if (matchesSelector(element, selector)) {
@@ -205,11 +225,10 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
    * 단일 Element에 편집 버튼 추가
    */
   function addEditButtonToElement(element) {
-
     // 예외처리 봇일 경우 return
-    if ( EXCLUDE_BOT_NAMES.includes(getChar().name) ) return;
+    if (EXCLUDE_BOT_NAMES.includes(getChar().name)) return;
     // 메시지가 없을 경우 return
-    if ( getChar().chats[getChar().chatPage].message.length === 0 ) return;
+    if (getChar().chats[getChar().chatPage].message.length === 0) return;
 
     // 텍스트 내용 확인 (button.x-risu-button-default 제외)
     const tempElement = element.cloneNode(true);
@@ -224,10 +243,13 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     }
 
     let closestRisuChatDiv = element.closest("div.risu-chat");
+    let chatIdx = -1;
     if (closestRisuChatDiv) {
-      let chatIdx = closestRisuChatDiv.getAttribute("data-chat-index");
-      getChar().chats[getChar().chatPage].message[chatIdx].data;
+      chatIdx = closestRisuChatDiv.getAttribute("data-chat-index");
     }
+
+    if (chatIdx === -1) return;
+
     // 요소 자체를 relative로 설정
     if (getComputedStyle(element).position === "static") {
       element.style.position = "relative";
@@ -363,9 +385,9 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     const CUTOFF = opts.fuzzyCutoff ?? 20;
     const EXTEND_EOL = !!opts.extendToEOL; // ← 추가
     const EXTEND_MAX = opts.extendMax ?? 5000; // 안전 캡(선택)
-    const SNAP_BOL   = !!opts.snapStartToPrevEOL;       // ← 추가: fuzzy+eol 시 start를 줄 시작으로 스냅
-    const SNAP_BACK  = opts.snapMaxBack ?? 4;          // ← 추가: start 기준 뒤로 최대 탐색 길이
-    const SNAP_TRIM  = opts.snapTrimSpaces ?? true;     // ← 추가: 줄 시작 공백/탭 스킵
+    const SNAP_BOL = !!opts.snapStartToPrevEOL; // ← 추가: fuzzy+eol 시 start를 줄 시작으로 스냅
+    const SNAP_BACK = opts.snapMaxBack ?? 4; // ← 추가: start 기준 뒤로 최대 탐색 길이
+    const SNAP_TRIM = opts.snapTrimSpaces ?? true; // ← 추가: 줄 시작 공백/탭 스킵
 
     // --- 1) HTML → 평문 ---
     const plain = htmlToPlain(replacedHtml);
@@ -378,7 +400,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     // --- 3) 1순위: 전체 일치 ---
     let idx = mdN.indexOf(plN);
     if (idx >= 0) {
-      console.log
+      console.log;
       return mapBack(idx, idx + plN.length);
     }
 
@@ -401,27 +423,33 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
       for (let i = 0; i + plN.length <= mdN.length; i += step) {
         const seg = mdN.slice(i, i + plN.length);
         const d = fastEditDistance(plN, seg, CUTOFF);
-        if (d < best.dist) { best = { pos: i, dist: d }; if (d === 0) break; }
+        if (d < best.dist) {
+          best = { pos: i, dist: d };
+          if (d === 0) break;
+        }
       }
-      if (best.pos >= 0 && best.dist <= Math.max(5, Math.floor(plN.length * 0.15))) {
+      if (
+        best.pos >= 0 &&
+        best.dist <= Math.max(5, Math.floor(plN.length * 0.15))
+      ) {
         let nStart = best.pos;
-        let nEnd   = best.pos + plN.length; // exclusive
+        let nEnd = best.pos + plN.length; // exclusive
 
         if (EXTEND_EOL) {
           // 끝은 다음 줄바꿈 전까지(또는 문서 끝/extendMax까지)
-          const nl = mdN.indexOf('\n', nEnd);
+          const nl = mdN.indexOf("\n", nEnd);
           const hardCapEnd = Math.min(mdN.length, nEnd + EXTEND_MAX);
-          nEnd = (nl === -1) ? hardCapEnd : Math.min(nl, hardCapEnd);
+          nEnd = nl === -1 ? hardCapEnd : Math.min(nl, hardCapEnd);
 
           if (SNAP_BOL) {
             // start를 이전 줄바꿈 다음으로 스냅(근처만 허용)
             const scanStart = Math.max(0, nStart - SNAP_BACK);
             const local = mdN.slice(scanStart, nStart);
-            const nlLocalIdx = local.lastIndexOf('\n');
+            const nlLocalIdx = local.lastIndexOf("\n");
             if (nlLocalIdx !== -1) {
               let s = scanStart + nlLocalIdx + 1; // '\n' 바로 다음
               if (SNAP_TRIM) {
-                while (s < nStart && (mdN[s] === ' ' || mdN[s] === '\t')) s++;
+                while (s < nStart && (mdN[s] === " " || mdN[s] === "\t")) s++;
               }
               // 안전 가드: 스냅 후 start가 end보다 크지 않도록
               if (s < nEnd) nStart = s;
@@ -429,7 +457,11 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
           }
         }
 
-        return mapBack(nStart, nEnd, EXTEND_EOL ? (SNAP_BOL ? 'fuzzy+eol+snap' : 'fuzzy+eol') : 'fuzzy');
+        return mapBack(
+          nStart,
+          nEnd,
+          EXTEND_EOL ? (SNAP_BOL ? "fuzzy+eol+snap" : "fuzzy+eol") : "fuzzy"
+        );
       }
     }
 
@@ -482,62 +514,91 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
       const map = [];
       const len = s.length;
       let i = 0;
-    
+
       // 타이포그래픽 문자 매핑 테이블 (필요시 확장)
       const typomap = {
-        '\u2018': "'", // ‘
-        '\u2019': "'", // ’
-        '\u201C': '"', // “
-        '\u201D': '"', // ”
-        '\u2013': '-', // –
-        '\u2014': '-', // —
-        '\u3000': ' ', // 전각 공백
+        "\u2018": "'", // ‘
+        "\u2019": "'", // ’
+        "\u201C": '"', // “
+        "\u201D": '"', // ”
+        "\u2013": "-", // –
+        "\u2014": "-", // —
+        "\u3000": " ", // 전각 공백
       };
-    
+
       while (i < len) {
         const ch = s[i];
-    
+
         // CRLF/CR → \n
-        if (ch === '\r') {
+        if (ch === "\r") {
           const next = s[i + 1];
-          out.push('\n'); map.push(i);
-          i += (next === '\n') ? 2 : 1;
+          out.push("\n");
+          map.push(i);
+          i += next === "\n" ? 2 : 1;
           continue;
         }
-    
+
         // 제로폭 제거
-        if ((ch >= '\u200B' && ch <= '\u200D') || ch === '\uFEFF') { i++; continue; }
-    
+        if ((ch >= "\u200B" && ch <= "\u200D") || ch === "\uFEFF") {
+          i++;
+          continue;
+        }
+
         // NBSP → space
-        if (ch === '\u00A0') { out.push(' '); map.push(i); i++; continue; }
-    
+        if (ch === "\u00A0") {
+          out.push(" ");
+          map.push(i);
+          i++;
+          continue;
+        }
+
         // 타이포그래픽 치환(1:1)
-        if (typomap[ch]) { out.push(typomap[ch]); map.push(i); i++; continue; }
-    
+        if (typomap[ch]) {
+          out.push(typomap[ch]);
+          map.push(i);
+          i++;
+          continue;
+        }
+
         // 줄임표 … → ...
-        if (ch === '\u2026') {
-          out.push('.','.','.');
+        if (ch === "\u2026") {
+          out.push(".", ".", ".");
           map.push(i, i, i); // 세 글자 모두 같은 원본 위치를 가리키게
-          i++; continue;
+          i++;
+          continue;
         }
-    
+
         // 공백/탭 런 축약
-        if (ch === ' ' || ch === '\t') {
-          if (out.length > 0 && out[out.length - 1] === ' ') { i++; continue; }
-          out.push(' '); map.push(i); i++; continue;
+        if (ch === " " || ch === "\t") {
+          if (out.length > 0 && out[out.length - 1] === " ") {
+            i++;
+            continue;
+          }
+          out.push(" ");
+          map.push(i);
+          i++;
+          continue;
         }
-    
+
         // 일반 문자
-        out.push(ch); map.push(i); i++;
+        out.push(ch);
+        map.push(i);
+        i++;
       }
-    
+
       // 좌우 trim (필요하면)
       // 앞쪽 trim
-      while (out.length && out[0] === ' ') { out.shift(); map.shift(); }
+      while (out.length && out[0] === " ") {
+        out.shift();
+        map.shift();
+      }
       // 뒤쪽 trim
-      while (out.length && out[out.length - 1] === ' ') { out.pop(); map.pop(); }
-    
-      return { norm: out.join(''), map };
+      while (out.length && out[out.length - 1] === " ") {
+        out.pop();
+        map.pop();
+      }
+
+      return { norm: out.join(""), map };
     }
 
     function fastEditDistance(a, b, cutoff = 30) {
@@ -562,7 +623,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
       return dp[m];
     }
   }
-  
+
   /**
    * 편집모드 전환
    */
@@ -576,7 +637,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
 
     // 편집 버튼의 부모 요소 (p 또는 li) 찾기
     const targetElement = element.closest(
-      "h1, h2, h3,p, li, div.x-risu-regex-quote-block, div.x-risu-regex-thought-block, div.x-risu-regex-sound-block, div.x-risu-message, div.x-risu-lb-nai-character-tags, div.x-risu-lb-nai-comp-tags"
+      "h1, h2, h3,p, li, div.x-risu-regex-quote-block, div.x-risu-regex-thought-block, div.x-risu-regex-sound-block, div.x-risu-message, div.x-risu-lb-nai-character-tags, div.x-risu-lb-nai-comp-tags, ol, ul"
     );
     if (!targetElement) return;
 
@@ -630,7 +691,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
       getChar().chats[getChar().chatPage].message[chatIndex].data;
     let hit = findOriginalRangeFromHtml(currentChatMessage, originalText, {
       extendToEOL: false,
-      snapStartToPrevEOL: false
+      snapStartToPrevEOL: false,
     });
 
     let taValue = "";
@@ -715,13 +776,16 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     if (start <= 0) return 0;
     const scanStart = Math.max(0, start - maxBack);
     const local = str.slice(scanStart, start);
-    const nlLocalIdx = local.lastIndexOf('\n');
+    const nlLocalIdx = local.lastIndexOf("\n");
     if (nlLocalIdx === -1) return start; // 근처에 EOL 없음 → 그대로
 
     let newStart = scanStart + nlLocalIdx + 1; // '\n' 바로 다음
     if (trimSpaces) {
       // 줄 시작의 앞공백 스킵(선택)
-      while (newStart < start && (str[newStart] === ' ' || str[newStart] === '\t')) {
+      while (
+        newStart < start &&
+        (str[newStart] === " " || str[newStart] === "\t")
+      ) {
         newStart++;
       }
     }
@@ -760,7 +824,7 @@ if (globalThis.__pluginApis__ && globalThis.__pluginApis__.setArg) {
     // 전체 메시지 데이터에서 원본 HTML을 새 HTML로 교체
     let oldFullText =
       getChar().chats[getChar().chatPage].message[chatIndex].data;
-    
+
     if (hit) {
       // 오프셋 기반 치환
       let { start, end } = hit;

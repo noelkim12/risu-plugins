@@ -1,5 +1,5 @@
 export const PLUGIN_NAME = "Risu Typewrite";
-export const PLUGIN_VERSION = "v0.1";
+export const PLUGIN_VERSION = "0.1";
 export const RT_BUTTON_CLASSNAME = "rt-button-appended";
 
 export const EXTERNAL_SCRIPTS = [

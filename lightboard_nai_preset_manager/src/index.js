@@ -222,7 +222,7 @@ class LightboardNAIPresetManager {
     );
     if (burgerEl && !burgerEl.classList.contains(LNPM_BUTTON_CLASSNAME)) {
       const presetDiv = document.createElement("lnpm-menu-button");
-      burgerEl.addEventListener("click", () => {
+      presetDiv.addEventListener("click", () => {
         this.openModuleBox();
       });
       burgerEl.appendChild(presetDiv);

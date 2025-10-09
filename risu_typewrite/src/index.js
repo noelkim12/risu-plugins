@@ -1,22 +1,17 @@
 import {
   PLUGIN_NAME,
   PLUGIN_VERSION,
-  LNPM_BUTTON_CLASSNAME,
+  RT_BUTTON_CLASSNAME,
 } from "./constants.js";
 import { RisuAPI } from "./core/risu-api.js";
-import { ModuleManager } from "./core/module-manager.js";
-import { PresetManager } from "./core/preset-manager.js";
 import { injectStyles } from "./ui/styles.js";
-import { LnpmMenuButton } from "./ui/components/menu-button.js";
-import { LnpmToolbar } from "./ui/components/toolbar.js";
-import { LnpmList } from "./ui/components/list.js";
-import { LnpmFormPage } from "./ui/components/form-page.js";
-import { LnpmTabs } from "./ui/components/tabs.js";
-import { LnpmPreviewTab } from "./ui/components/preview-tab.js";
+import { RTMenuButton } from "./ui/components/menu-button.js";
 import { injectScripts } from "./utils/script-injector.js";
+import "./ui/components/typing-game.js";
+import "./ui/components/typing-stats.js";
 
 // 메인 애플리케이션 클래스
-class LightboardNAIPresetManager {
+class RisuTypewrite {
   constructor() {
     this.risuAPI = null;
     this.observer = null;
@@ -48,14 +43,6 @@ class LightboardNAIPresetManager {
     // 스타일 주입
     injectStyles();
 
-    // Custom Elements 등록
-    const CE = globalThis.customElements || customElements;
-    CE.get("lnpm-list") || CE.define("lnpm-list", LnpmList);
-    CE.get("lnpm-toolbar") || CE.define("lnpm-toolbar", LnpmToolbar);
-    CE.get("lnpm-menu-button") || CE.define("lnpm-menu-button", LnpmMenuButton);
-    CE.get("lnpm-form-page") || CE.define("lnpm-form-page", LnpmFormPage);
-    CE.get("lnpm-tabs") || CE.define("lnpm-tabs", LnpmTabs);
-    CE.get("lnpm-preview-tab") || CE.define("lnpm-preview-tab", LnpmPreviewTab);
   }
 
   openModuleBox() {
@@ -64,32 +51,32 @@ class LightboardNAIPresetManager {
     const isMobile = window.innerWidth <= 768;
     const winboxConfig = isMobile
       ? {
-          title: "LIGHTBOARD NAI 프리셋",
+          title: "Risu Typewrite - 타자 연습",
           x: "center",
           y: "center",
-          width: "80%",
-          height: "80%",
-          minwidth: "80%",
-          minheight: "80%",
+          width: "90%",
+          height: "85%",
+          minwidth: "90%",
+          minheight: "85%",
           mount: this.rtModuleBoxRoot,
-          background: "#0f131a",
-          class: ["no-full", "no-resize", "no-max", "no-min", "lnpm-box"],
+          background: "#fff",
+          class: ["no-full", "no-resize", "no-max", "no-min", "rt-box"],
           onclose: () => {
             this.rtModuleBox = null;
             location.hash = "";
           },
         }
       : {
-          title: "Risu Typewrite",
+          title: "Risu Typewrite - 타자 연습",
           x: "center",
           y: "center",
-          width: Math.min(650, window.innerWidth * 0.9) + "px",
-          height: Math.min(650, window.innerHeight * 0.8) + "px",
-          minwidth: "320px",
-          minheight: "400px",
+          width: Math.min(820, window.innerWidth * 0.9) + "px",
+          height: Math.min(600, window.innerHeight * 0.8) + "px",
+          minwidth: "770px",
+          minheight: "500px",
           mount: this.rtModuleBoxRoot,
-          background: "#0f131a",
-          class: ["no-full", "no-max", "no-min", "lnpm-box"],
+          background: "#fff",
+          class: ["no-full", "no-max", "no-min", "rt-box"],
           onclose: () => {
             this.rtModuleBox = null;
             location.hash = "";
@@ -97,18 +84,20 @@ class LightboardNAIPresetManager {
         };
 
     this.rtModuleBox = new WinBox(winboxConfig);
-    location.hash = "";
-    this.renderList();
+    location.hash = "#/game";
+    this.render();
   }
 
-  renderList() {
+  renderTypingGame() {
     this.rtModuleBoxRoot.innerHTML = "";
-    const toolbarEl = document.createElement("lnpm-toolbar");
-    toolbarEl.config = {
-      title: "프리셋 목록",
-    };
-    this.rtModuleBoxRoot.appendChild(toolbarEl);
-    this.rtModuleBoxRoot.appendChild(null);
+    const gameEl = document.createElement("rt-typing-game");
+    this.rtModuleBoxRoot.appendChild(gameEl);
+  }
+
+  renderStats() {
+    this.rtModuleBoxRoot.innerHTML = "";
+    const statsEl = document.createElement("rt-typing-stats");
+    this.rtModuleBoxRoot.appendChild(statsEl);
   }
 
   navigate(to) {
@@ -119,10 +108,18 @@ class LightboardNAIPresetManager {
   render() {
     const hash = location.hash.slice(1); // '#' 제거
 
-    if (!hash || hash === "/") {
-      this.renderList();
+    if (!hash || hash === "/" || hash === "/game") {
+      this.renderTypingGame();
       return;
     }
+
+    if (hash === "/stats") {
+      this.renderStats();
+      return;
+    }
+
+    // 기본값: 타이핑 게임
+    this.renderTypingGame();
   }
 
   setupHashListener() {

@@ -1,12 +1,13 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
+const { PLUGIN_NAME, PLUGIN_VERSION } = require('./src/constants');
 
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'risu-typewrite.js',
+    filename: 'risu_typewrite.js',
     library: {
       type: 'var',
       name: 'RisuTypewrite'
@@ -32,10 +33,10 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: `//@name Risu Typewrite
-//@display-name Risu Typewrite_v0.1
-//@version 0.1
-//@description Risu Typewrite for RISU AI`,
+      banner: `//@name ${PLUGIN_NAME}
+//@display-name ${PLUGIN_NAME}_v${PLUGIN_VERSION}
+//@version ${PLUGIN_VERSION}
+//@description ${PLUGIN_NAME} for RISU AI`,
       raw: true
     })
   ],
