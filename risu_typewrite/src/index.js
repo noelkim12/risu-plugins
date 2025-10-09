@@ -56,10 +56,8 @@ class RisuTypewrite {
           y: "center",
           width: "90%",
           height: "85%",
-          minwidth: "90%",
-          minheight: "85%",
           mount: this.rtModuleBoxRoot,
-          background: "#fff",
+          background: "#0f131a",
           class: ["no-full", "no-resize", "no-max", "no-min", "rt-box"],
           onclose: () => {
             this.rtModuleBox = null;
@@ -70,12 +68,10 @@ class RisuTypewrite {
           title: "Risu Typewrite - 타자 연습",
           x: "center",
           y: "center",
-          width: Math.min(820, window.innerWidth * 0.9) + "px",
-          height: Math.min(600, window.innerHeight * 0.8) + "px",
-          minwidth: "770px",
-          minheight: "500px",
+          width: Math.min(1080, window.innerWidth * 0.9) + "px",
+          height: Math.min(400, window.innerHeight * 0.8) + "px",
           mount: this.rtModuleBoxRoot,
-          background: "#fff",
+          background: "#0f131a",
           class: ["no-full", "no-max", "no-min", "rt-box"],
           onclose: () => {
             this.rtModuleBox = null;

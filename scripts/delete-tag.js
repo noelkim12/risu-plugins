@@ -32,6 +32,8 @@ function deleteTag(pluginName) {
     tagName = `lightboard-nai-preset-v${version}`;
   } else if (pluginName === 'plugin_dnd') {
     tagName = `plugin-dnd-v${version}`;
+  } else if (pluginName === 'risu_typewrite') {
+    tagName = `risu-typewrite-v${version}`;
   } else {
     tagName = `${pluginName}-v${version}`;
   }

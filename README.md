@@ -15,6 +15,9 @@ RisuAI 내부 이미지 생성을 위한 NovelAI 프리셋을 관리하고 적�
 ### [Plugin DND](./plugin_dnd/)
 RisuAI 내부 플러그인 적용 및 플러그인 변수를 토글 가능하도록 변경해주는 플러그인
 
+### [Risu Typewrite](./risu_typewrite/)
+RisuAI에서 타이핑 연습을 할 수 있는 플러그인. 
+
 ## 📄 라이선스
 이 프로젝트의 모든 플러그인은 MIT 라이선스 하에 배포됩니다.
 

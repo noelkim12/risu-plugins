@@ -32,6 +32,8 @@ function createTag(pluginName) {
     tagName = `lightboard-nai-preset-v${version}`;
   } else if (pluginName === 'plugin_dnd') {
     tagName = `plugin-dnd-v${version}`;
+  } else if (pluginName === 'risu_typewrite') {
+    tagName = `risu-typewrite-v${version}`;
   } else {
     tagName = `${pluginName}-v${version}`;
   }
@@ -45,7 +47,7 @@ function createTag(pluginName) {
       if (result.trim() === tagName) {
         console.log(`⚠️  Tag ${tagName} already exists.`);
         console.log(`📋 Options:`);
-        console.log(`   1. Delete existing tag: npm run delete-tag:hddm`);
+        console.log(`   1. Delete existing tag: npm run delete-tag:${pluginName}`);
         console.log(`   2. Update version in versions.json and try again`);
         console.log(`   3. Use different version number`);
         process.exit(1);

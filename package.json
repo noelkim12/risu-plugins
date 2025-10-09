@@ -7,19 +7,23 @@
     "release:cbs": "node scripts/release.js cbs_intellisense", 
     "release:lb-nai-preset": "node scripts/release.js lightboard_nai_preset_manager",
     "release:plugin-dnd": "node scripts/release.js plugin_dnd",
+    "release:risu-typewrite": "node scripts/release.js risu_typewrite",
     "release:all": "npm run release:hddm && npm run release:cbs && npm run release:lb-nai-preset && npm run release:plugin-dnd",
     "tag:hddm": "node scripts/create-tag.js hddm_edit",
     "tag:cbs": "node scripts/create-tag.js cbs_intellisense",
     "tag:lb-nai-preset": "node scripts/create-tag.js lightboard_nai_preset_manager",
     "tag:plugin-dnd": "node scripts/create-tag.js plugin_dnd",
+    "tag:risu-typewrite": "node scripts/create-tag.js risu_typewrite",
     "delete-tag:hddm": "node scripts/delete-tag.js hddm_edit",
     "delete-tag:cbs": "node scripts/delete-tag.js cbs_intellisense",
     "delete-tag:lb-nai-preset": "node scripts/delete-tag.js lightboard_nai_preset_manager",
     "delete-tag:plugin-dnd": "node scripts/delete-tag.js plugin_dnd",
+    "delete-tag:risu-typewrite": "node scripts/delete-tag.js risu_typewrite",
     "version:hddm": "node scripts/update-version.js hddm_edit",
     "version:cbs": "node scripts/update-version.js cbs_intellisense",
     "version:lb-nai-preset": "node scripts/update-version.js lightboard_nai_preset_manager",
-    "version:plugin-dnd": "node scripts/update-version.js plugin_dnd"
+    "version:plugin-dnd": "node scripts/update-version.js plugin_dnd",
+    "version:risu-typewrite": "node scripts/update-version.js risu_typewrite"
   },
   "keywords": [
     "risu",
@@ -27,16 +31,17 @@
     "plugins",
     "chatbot",
     "cbs",
-    "intellisense"
+    "intellisense",
+    "risu-typewrite"
   ],
-  "author": "RISU Plugins Team",
+  "author": "Noel Kim",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/risu-plugins.git"
+    "url": "https://github.com/noelkim12/risu-plugins.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/risu-plugins/issues"
+    "url": "https://github.com/noelkim12/risu-plugins/issues"
   },
-  "homepage": "https://github.com/your-username/risu-plugins#readme"
+  "homepage": "https://github.com/noelkim12/risu-plugins#readme"
 }
