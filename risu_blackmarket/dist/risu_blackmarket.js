@@ -1,6 +1,6 @@
 //@name Risu Blackmarket
-//@display-name Risu Blackmarket_v0.1
-//@version 0.1
+//@display-name Risu Blackmarket_v0.2
+//@version 0.2
 //@description Risu Blackmarket for RISU AI
 var RisuBlackmarket;
 /******/ (() => { // webpackBootstrap
@@ -438,7 +438,7 @@ class RisuAPI {
 /* harmony export */ });
 /* unused harmony export PLUGIN_VERSION */
 const PLUGIN_NAME = "Risu Blackmarket";
-const PLUGIN_VERSION = "0.1";
+const PLUGIN_VERSION = "0.2";
 const RB_BUTTON_CLASSNAME = "rb-button-appended";
 
 const EXTERNAL_SCRIPTS = [
@@ -1751,7 +1751,7 @@ class RisuBlackmarket {
 
   attachButton() {
     let burgerEl = document.querySelector(
-      "div.absolute.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
+      "div.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
     );
     if (burgerEl && !burgerEl.classList.contains(constants/* RB_BUTTON_CLASSNAME */.Oh)) {
       const blackmarketButtonDiv = document.createElement("rb-menu-button");

@@ -1,6 +1,6 @@
 //@name Lightboard NAI Preset Manager
-//@display-name Lightboard NAI Preset Manager_v0.4
-//@version 0.4
+//@display-name Lightboard NAI Preset Manager_v0.5
+//@version 0.5
 //@description Lightboard NAI Preset Manager for RISU AI
 var LightboardNAIPresetManager;
 /******/ (() => { // webpackBootstrap
@@ -59,7 +59,7 @@ class RisuAPI {
 /* harmony export */ });
 /* unused harmony export PLUGIN_VERSION */
 const PLUGIN_NAME = "Lightboard NAI Preset Manager";
-const PLUGIN_VERSION = "0.4";
+const PLUGIN_VERSION = "0.5";
 const ALLOWED_NAMESPACE_ARRAY = ["lightboard-NAI", "lightboard-WAN"];
 const LNPM_BUTTON_CLASSNAME = "lnpm-button-appended";
 
@@ -2154,7 +2154,7 @@ class LightboardNAIPresetManager {
 
   attachButton() {
     let burgerEl = document.querySelector(
-      "div.absolute.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
+      "div.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
     );
     if (burgerEl && !burgerEl.classList.contains(constants/* LNPM_BUTTON_CLASSNAME */.RG)) {
       const presetDiv = document.createElement("lnpm-menu-button");

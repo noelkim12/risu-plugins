@@ -130,7 +130,7 @@ class RisuBlackmarket {
 
   attachButton() {
     let burgerEl = document.querySelector(
-      "div.absolute.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
+      "div.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
     );
     if (burgerEl && !burgerEl.classList.contains(RB_BUTTON_CLASSNAME)) {
       const blackmarketButtonDiv = document.createElement("rb-menu-button");

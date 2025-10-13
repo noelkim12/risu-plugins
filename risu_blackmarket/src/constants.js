@@ -1,5 +1,5 @@
 export const PLUGIN_NAME = "Risu Blackmarket";
-export const PLUGIN_VERSION = "0.1";
+export const PLUGIN_VERSION = "0.2";
 export const RB_BUTTON_CLASSNAME = "rb-button-appended";
 
 export const EXTERNAL_SCRIPTS = [

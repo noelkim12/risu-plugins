@@ -15,7 +15,7 @@
   },
   "lightboard_nai_preset_manager": {
     "name": "Lightboard NAI Preset Manager",
-    "version": "0.4",
+    "version": "0.5",
     "files": [
       "dist/lightboard_nai_preset_manager.js"
     ]
@@ -36,7 +36,7 @@
   },
   "risu_blackmarket": {
     "name": "Risu Blackmarket",
-    "version": "0.1",
+    "version": "0.2",
     "files": [
       "dist/risu_blackmarket.js"
     ]
