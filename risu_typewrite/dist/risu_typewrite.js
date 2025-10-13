@@ -1,6 +1,6 @@
 //@name Risu Typewrite
-//@display-name Risu Typewrite_v0.1
-//@version 0.1
+//@display-name Risu Typewrite_v0.2
+//@version 0.2
 //@description Risu Typewrite for RISU AI
 var RisuTypewrite;
 /******/ (() => { // webpackBootstrap
@@ -58,7 +58,7 @@ class RisuAPI {
 /* harmony export */ });
 /* unused harmony export PLUGIN_VERSION */
 const PLUGIN_NAME = "Risu Typewrite";
-const PLUGIN_VERSION = "0.1";
+const PLUGIN_VERSION = "0.2";
 const RT_BUTTON_CLASSNAME = "rt-button-appended";
 
 const EXTERNAL_SCRIPTS = [
@@ -825,7 +825,11 @@ const paragraphs = [
   "야 김채뿡!!!",
   "씨발 다 해줬잖아",
   "요즘 ' ' 가 부족하단 말이지",
+  "챗평ㅋㅋ",
+  "잼민이3.0 출격(제발)",
+  "랄라라~ 날죄 좁다!",
   " ",
+  "리수 한달에 얼마들어요?",
   "와 어떡하냐 나 임신했을지도 몰름...",
   "아 제미나이 씨발새끼",
   "Gemini3.0이 이번달은 아니지만 곧 나올거라 함(2025.09.11)",
@@ -837,7 +841,10 @@ const paragraphs = [
   "코끼리를 생각하지 마",
   "오늘 유저 존나 눅눅하네",
   "오늘 유저 존나 바삭하네",
+  "반 복 그 만하 라 고 시! 발!",
   "유저=적 아니에요?",
+  "히히 체스 재밋다",
+  "잼민이 꿀밤5만대 쥐어박고싶다",
   "모든 행복한 가정은 서로 닮았고, 불행한 가정은 저마다의 이유로 불행하다.", // 안나 카레니나
   "부재는 사랑에 아무런 힘도 되지 못했다.", // 위대한 개츠비
   "죽은 자만이 전쟁의 끝을 본다.", // 플라톤 (소설 인용)
@@ -2873,7 +2880,7 @@ class RisuTypewrite {
 
   attachButton() {
     let burgerEl = document.querySelector(
-      "div.absolute.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
+      "div.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
     );
     if (burgerEl && !burgerEl.classList.contains(constants/* RT_BUTTON_CLASSNAME */.ov)) {
       const wtButtonDiv = document.createElement("rt-menu-button");
